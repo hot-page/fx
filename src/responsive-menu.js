@@ -57,7 +57,7 @@ class ResponsiveMenu extends HTMLElement {
   }
 
   #onClickMenu = (event) => {
-    if (event.target.matches('#menu')) return
+    if (this.state == 'visible' || !event.target.closest('a')) return
     this.state = 'closed'
   }
 
@@ -144,8 +144,6 @@ class ResponsiveMenu extends HTMLElement {
         :host([state="open"]) #menu {
           transform: none;
         }
-
-
       </style>
       <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">
         <path d="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7" />
@@ -163,6 +161,10 @@ class ResponsiveMenu extends HTMLElement {
       .shadowRoot
       .querySelector('#menu')
       .addEventListener('click', this.#onClickMenu)
+    this
+      .shadowRoot
+      .querySelector('#mask')
+      .addEventListener('click', () => this.close())
   }
 }
 
