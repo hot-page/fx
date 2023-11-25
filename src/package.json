@@ -1,9 +1,8 @@
 {
   "name": "@hot-page/fx",
-  "version": "0.0.0",
+  "version": "0.0.4",
   "type": "module",
   "description": "Code for special effects for documents on Hot Page (https://hot.page/)",
-  "main": "dev-server.js",
   "scripts": {
     "start": "node dev-server.js"
   },
