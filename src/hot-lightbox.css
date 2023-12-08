@@ -42,22 +42,21 @@ dialog.closed::backdrop {
   to { opacity: 0; }
 }
 
+svg {
+  display: block;
+}
 
 #close {
   position: fixed;
-  top: 10px;
-  right: 10px;
+  top: var(--button-margin, 1rem);
+  right: var(--button-margin, 1rem);
   cursor: pointer;
   color: var(--button-color, rgba(255 255 255 / 70%));
+  font-size: var(--button-size, 3rem);
 }
 
 #close:hover {
   color: var(--button-hover-color, rgba(255 255 255 / 100%));
-}
-
-#close svg {
-  display: block;
-  width: var(--button-width, 50px);
 }
 
 #content {
@@ -99,9 +98,8 @@ dialog.closed::backdrop {
 #next, #previous {
   position: absolute;
   top: 50%;
-  width: var(--button-width, 50px);
   transform: translateY(-50%);
-  font-size: 3rem;
+  font-size: var(--button-size, 3rem);
   cursor: pointer;
   display: flex;
   flex-flow: column nowrap;
@@ -109,12 +107,16 @@ dialog.closed::backdrop {
   color: var(--button-color, rgba(255 255 255 / 70%));
 }
 
+#next svg, #previous svg {
+  display: block;
+}
+
 #previous {
-  left: 16px;
+  left: var(--button-margin, 1rem);
 }
 
 #next {
-  right: 16px;
+  right: var(--button-margin, 1rem);
 }
 
 
