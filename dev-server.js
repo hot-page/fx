@@ -12,7 +12,7 @@ local.init({
   open: false,
 })
 
-
+// This is if you want to proxy your pages from Hot Page and replace the scripts used with these ones. This can be a fast way to preview a page or a whole site without changing any of the live pages.
 // const proxy = browserSync.create('proxy')
 // proxy.init({
 //   proxy: 'https://playground.hot.page/',
@@ -68,55 +68,4 @@ local.init({
 //         </head>`
 //     },
 //   ]
-// })
-
-
-// import http from 'http'
-// import startDevServer from '@hot-page/dev-server'
-// import static from 'node-static'
-//
-// var file = new(static.Server)(__dirname);
-//
-// http.createServer(function (req, res) {
-//   file.serve(req, res);
-// }).listen(8080)
-//
-// startDevServer({
-//   site: 'hot.page',
-//   port: 8000,
-//   addAssets: [
-//     'http://localhost:8001/playground.js',
-//   ],
-//   replaceAssets: {
-//     'https://static.hot.page/assets/drop-reveal.js':
-//       'http://localhost:8001/assets/drop-reveal.js',
-//     'https://static.hot.page/assets/hanging-punctuation.js':
-//       'http://localhost:8001/assets/hanging-punctuation.js',
-//     'https://static.hot.page/assets/hot-form.js':
-//       'http://localhost:8001/assets/hot-form.js',
-//     'https://static.hot.page/assets/intersection-observer.js':
-//       'http://localhost:8001/assets/intersection-observer.js',
-//     'https://static.hot.page/assets/paginator.js':
-//       'http://localhost:8001/assets/paginator.js',
-//     'https://static.hot.page/assets/parallax.css':
-//       'http://localhost:8001/assets/parallax.js',
-//     'https://static.hot.page/assets/scroll-synced-audio.js':
-//       'http://localhost:8001/assets/scroll-synced-audio.js',
-//     'https://static.hot.page/assets/scroll-synced-video.js':
-//       'http://localhost:8001/assets/scroll-synced-video.js',
-//     'https://static.hot.page/assets/speech-bubble.js':
-//       'http://localhost:8001/assets/speech-bubble.js',
-//     'https://static.hot.page/assets/skeleton.css':
-//       'http://localhost:8001/assets/skeleton.js',
-//     'https://static.hot.page/assets/far-out-carousel.js':
-//       'http://localhost:8001/assets/far-out-carousel.js',
-//     'https://static.hot.page/demos/alice.css':
-//       'http://localhost:8001/demos/alice.js',
-//     'https://static.hot.page/demos/hot-page-landing.css':
-//       'http://localhost:8001/demos/hot-page-landing.js',
-//     'https://static.hot.page/demos/rabbit-hole.js':
-//       'http://localhost:8001/demos/rabbit-hole.js',
-//     'https://static.hot.page/demos/xela.css':
-//       'http://localhost:8001/demos/xela.js',
-//   }
 // })

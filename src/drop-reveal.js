@@ -1,22 +1,29 @@
 class DropReveal extends HTMLElement {
   constructor() {
     super()
-    console.log(this)
     this.attachShadow({ mode: 'open' });
-    document.addEventListener('DOMContentLoaded', () => {
-      this._intersectionObserver = new IntersectionObserver(this._intersectionCallback.bind(this))
-      this._intersectionObserver.observe(this)
-    })
+    this._intersectionObserver = new IntersectionObserver(this._intersectionCallback.bind(this))
+    this._intersectionObserver.observe(this)
   }
   
   _intersectionCallback(entries) {
     setTimeout(() => {
       if (entries[0].isIntersecting) {
-        this.shadowRoot.querySelector('.mask').classList.add('reveal')
+        this.reveal()
       } else {
-        this.shadowRoot.querySelector('.mask').classList.remove('reveal')
+        this.hide()
       }
     }, 100)
+  }
+
+  reveal() {
+    this.shadowRoot.querySelector('.mask').classList.remove('reveal')
+    void this.offsetHeight // trigger reflow
+    this.shadowRoot.querySelector('.mask').classList.add('reveal')
+  }
+
+  hide() {
+    this.shadowRoot.querySelector('.mask').classList.remove('reveal')
   }
   
   connectedCallback() {

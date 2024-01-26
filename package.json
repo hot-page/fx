@@ -1,1 +1,19 @@
-src/package.json
+{
+  "name": "@hot-page/fx",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Code for special effects for documents on Hot Page (https://hot.page/)",
+  "scripts": {
+    "start": "node dev-server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hot-page/fx.git"
+  },
+  "author": "Tim Farnam <tim@hot.page>",
+  "license": "MIT",
+  "homepage": "https://github.com/hot-page/frontend#readme",
+  "devDependencies": {
+    "browser-sync": "^2.27.9"
+  }
+}
