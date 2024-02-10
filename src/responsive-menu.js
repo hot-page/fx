@@ -14,6 +14,7 @@ class ResponsiveMenu extends HTMLElement {
   attributeChangedCallback() {
     this.#matchedMedia.removeEventListener('change', this.#onChangeMedia)
     this.#matchedMedia = window.matchMedia(this.#media)
+    this.#matchedMedia.addEventListener('change', this.#onChangeMedia)
     this.#render()
   }
 
@@ -125,13 +126,13 @@ class ResponsiveMenu extends HTMLElement {
             top: 0;
             right: 0;
             height: 100vh;
-            padding: 64px 32px 32px 32px;
-            overflow: scroll;
+            overflow: auto;
             flex-flow: column nowrap;
             align-items: start;
-            background: white;
             z-index: 4;
             transform: translateX(100%);
+            padding: var(--menu-padding, 64px 32px 32px 32px);
+            background: var(--menu-background, white);
           }
         }
 
