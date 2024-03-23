@@ -1,33 +1,33 @@
 
 // The <interection-observer> mimcs the JavaScript API of IntersectionObserver.
-
 // TODO:
 //   - add attributes for root, rootMargin, threshold
-//   - allow multiple targets
+//   - allow multiple targets (just needs querySelectorAll?
 
 class IntersectionObserverElement extends HTMLElement {
+  #intersectionObserver
 
   static get observedAttributes() { return ['target'] }
 
   constructor() {
     super()
-    this._createIntersectionObserver()
+    this.#createIntersectionObserver()
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    this._createIntersectionObserver()
+    this.#createIntersectionObserver()
   }
 
-  _createIntersectionObserver() {
-    if (this._intersectionObserver) this._intersectionObserver.disconnect()
-    this._intersectionObserver = new IntersectionObserver(this._intersectionCallback.bind(this))
+  #createIntersectionObserver() {
+    if (this.#intersectionObserver) this.#intersectionObserver.disconnect()
+    this.#intersectionObserver = new IntersectionObserver(this.#intersectionCallback)
     const target = this.hasAttribute('target') ?
       document.querySelector(this.getAttribute('target')) :
       this
-    this._intersectionObserver.observe(target)
+    this.#intersectionObserver.observe(target)
   }
 
-  _intersectionCallback(entries) {
+  #intersectionCallback = (entries) => {
     if (entries[0].isIntersecting) {
       this.classList.add('is-intersecting')
     } else {

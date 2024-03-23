@@ -14,7 +14,6 @@ document.head.insertAdjacentHTML('beforeend', `
 </style>
 `)
 
-// better name
 class ShyHeader extends HTMLElement {
   #lastScroll = 0
   #lastMaxScroll = 0
@@ -25,7 +24,7 @@ class ShyHeader extends HTMLElement {
   }
 
   #onScroll = () => {
-    if (window.scrollY > this.#lastScroll) {
+    if (window.scrollY > Math.max(100, this.#lastScroll)) {
       this.classList.add('hidden')
     } else if (window.scrollY < this.#lastMaxScroll - 100) {
       this.#lastMaxScroll = window.scrollY
