@@ -1,31 +1,29 @@
 /*
  *
  * TODO:
- *  - dot indicators
+ *  - uses fx-scroll-snapper
  *  - updates the list of images if one is added or removed from the DOM
- *  - something like an animation that indicates that you cant scroll past the end
- *  - or it hides the button when youre at the end? or somehow shows it as disabled?
  */
 
 document.head.insertAdjacentHTML('afterbegin', `
   <style>
-    [hot-lightbox] {
+    [fx-lightbox] {
       cursor: pointer;
     }
   </style>
 `)
 
 document.addEventListener('click', event => {
-  const el = event.target.closest('[hot-lightbox]')
+  const el = event.target.closest('[fx-lightbox]')
   if (!el) return
   event.preventDefault()
-  const lightbox = document.querySelector('hot-lightbox')
-  const elems = document.querySelectorAll('[hot-lightbox]')
+  const lightbox = document.querySelector('fx-lightbox')
+  const elems = document.querySelectorAll('[fx-lightbox]')
   const index = Array.from(elems).indexOf(el)
   lightbox.show(index)
 })
 
-class HotLightbox extends HTMLElement {
+class FXLightbox extends HTMLElement {
 
   constructor() {
     super()
@@ -81,7 +79,7 @@ class HotLightbox extends HTMLElement {
 
   #render() {
     this.shadowRoot.innerHTML = `
-      <link rel="stylesheet" href="${import.meta.url}/../hot-lightbox.css">
+      <link rel="stylesheet" href="${import.meta.url}/../fx-lightbox.js">
       <dialog>
         <div id="close">
           <svg width="1em" height="1em" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
@@ -118,10 +116,10 @@ class HotLightbox extends HTMLElement {
       .querySelector('#previous')
       .addEventListener('click', () => this.previous())
     this.shadowRoot.querySelector('#content').innerHTML = Array
-      .from(document.querySelectorAll('[hot-lightbox]'))
+      .from(document.querySelectorAll('[fx-lightbox]'))
       .map(el => `<div class="slide-wrapper">${el.outerHTML}</div>`)
       .join('')
   }
 }
 
-customElements.define('hot-lightbox', HotLightbox)
+customElements.define('fx-lightbox', FXLightbox)

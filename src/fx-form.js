@@ -1,11 +1,11 @@
 
 document.head.insertAdjacentHTML('beforeend', `
 <style>
-  hot-form {
+  fx-form {
     position: relative;
   }
 
-  hot-form .hot-form-submitted {
+  fx-form .fx-form-submitted {
     display: none;
     position: absolute;
     top: 50%;
@@ -13,23 +13,23 @@ document.head.insertAdjacentHTML('beforeend', `
     transform: translate(-50%, -50%);
   }
 
-  hot-form.submitted .hot-form-submitted {
+  fx-form.submitted .fx-form-submitted {
     display: block;
   }
-  hot-form.submitted form {
+  fx-form.submitted form {
     visibility: hidden;
   }
 
-  hot-form button {
+  fx-form button {
     position: relative;
   }
 
-  hot-form.loading button {
+  fx-form.loading button {
     color: transparent;
     pointer-events: none;
   }
 
-  hot-form.loading button:before {
+  fx-form.loading button:before {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -40,17 +40,17 @@ document.head.insertAdjacentHTML('beforeend', `
     border-radius: 50%;
     width: 1em;
     height: 1em;
-    animation: hot-form-button-loading infinite 0.6s linear;
+    animation: fx-form-button-loading infinite 0.6s linear;
   }
 
-  @keyframes hot-form-button-loading {
+  @keyframes fx-form-button-loading {
     from { transform: translate(-50%, -50%) rotate(0deg); }
     to { transform: translate(-50%, -50%) rotate(360deg); }
   }
 `)
 
 
-class HotForm extends HTMLElement {
+class FXForm extends HTMLElement {
   constructor() {
     super()
     this.addEventListener('submit', async event => {
@@ -74,11 +74,11 @@ class HotForm extends HTMLElement {
       event.submitter.disabled = false
     })
     this.addEventListener('click', async event => {
-      if (event.target.closest('[x-hot-form-reset]')) {
+      if (event.target.closest('[fx-form-reset]')) {
         this.classList.remove('submitted')
       }
     })
   }
 }
 
-customElements.define('hot-form', HotForm)
+customElements.define('fx-form', HotForm)

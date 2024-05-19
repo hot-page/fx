@@ -1,6 +1,9 @@
 /* based on a code pen by Mateus Generoso
  * https://codepen.io/mtsgeneroso/pen/mdJRpxX 
  * Thank you!
+ *
+ * TODO
+ *   listens to 'slotchange' event
  */
 
 class RainbowText extends HTMLElement {

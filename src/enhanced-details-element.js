@@ -8,7 +8,7 @@ document.head.insertAdjacentHTML('afterbegin', `
     summary {
       cursor: pointer;
       /* remove the triangle marker */
-      list-style: none;
+      list-style-type:none;
     }
 
     /* remove the triangle marker on Safari */

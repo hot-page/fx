@@ -1,6 +1,12 @@
 
+/* TODO:
+ *  - opens with spacebar or enter when the icon is focused
+ *  - aria attributes
+ *  - use dialog element like hot-lightbox or perhaps popover?
+ */
 class ResponsiveMenu extends HTMLElement {
   static observedAttributes = ["media"];
+  static #defaultMedia = '(max-width: 800px)'
   #matchedMedia
 
   constructor() {
@@ -20,13 +26,18 @@ class ResponsiveMenu extends HTMLElement {
 
   connectedCallback() {
     this.#render()
+    this.querySelector('[slot=icon]')
+      .addEventListener('click', this.#onClickIcon)
   }
 
   get state() {
     return this.getAttribute('state');
   }
-  
+
   set state(state) {
+    if (!['open','closed','visible'].includes(state)) {
+      throw new TypeError(`Invalid state "${state}"`)
+    }
     this.setAttribute('state', state);
   }
 
@@ -37,7 +48,7 @@ class ResponsiveMenu extends HTMLElement {
 
   close() {
     if (this.state == 'visible') return
-    this.state = 'close'
+    this.state = 'closed'
   }
 
   toggle() {
@@ -46,14 +57,14 @@ class ResponsiveMenu extends HTMLElement {
   }
 
   get #media() {
-    return this.getAttribute('media') || '(max-width: 800px)'
+    return this.getAttribute('media') || ResponsiveMenu.#defaultMedia
   }
 
   #onChangeMedia = (event) => {
     this.state = event.target.matches ? 'closed' : 'visible'
   }
 
-  #onClickIcon = (event) => {
+  #onClickIcon = () => {
     this.state = this.state == 'closed' ? 'open' : 'closed'
   }
 
@@ -63,7 +74,6 @@ class ResponsiveMenu extends HTMLElement {
   }
 
   #render() {
-    // Icon from https://codepen.io/shephero/pen/LYVrdjX (thank you!)
     this.shadowRoot.innerHTML = `
       <style>
         * {
@@ -83,6 +93,8 @@ class ResponsiveMenu extends HTMLElement {
           transition: d 300ms ease-out;
         }
 
+        /* Icon is from a CodePen by Owen Shepherd - thank you!
+         * https://codepen.io/shephero/pen/LYVrdjX */
         :host([state="open"]) #icon path {
           d: path('M3,3L5,5L7,3M5,5L5,5M3,7L5,5L7,7');
         }
@@ -90,9 +102,10 @@ class ResponsiveMenu extends HTMLElement {
         #menu {
           display: flex;
           flex-flow: row nowrap;
+          align-items: center;
         }
 
-        #mask {
+        #backdrop {
           opacity: 0;
           position: fixed;
           inset: 0;
@@ -100,16 +113,16 @@ class ResponsiveMenu extends HTMLElement {
           transition: opacity 300ms ease-out, visibility 300ms 0s;
         }
 
-        :host([state="visible"]) #mask {
+        :host([state="visible"]) #backdrop {
           display: none;
         }
 
-        :host([state="open"]) #mask {
+        :host([state="open"]) #backdrop {
           opacity: 1;
           visibility: visible;
         }
 
-        :host([state="closed"]) #mask {
+        :host([state="closed"]) #backdrop {
           opacity: 0;
           visibility: hidden;
         }
@@ -131,8 +144,19 @@ class ResponsiveMenu extends HTMLElement {
             align-items: start;
             z-index: 4;
             transform: translateX(100%);
-            padding: var(--menu-padding, 64px 32px 32px 32px);
-            background: var(--menu-background, white);
+            padding: 64px 32px 32px 32px;
+            background: white;
+            overscroll-behavior: contain;
+          }
+
+          /* required for overscroll-behavior: contain; */
+          #menu::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            display: block;
+            height: calc(100% + 1px);
+            width: 1px;
           }
         }
 
@@ -146,11 +170,15 @@ class ResponsiveMenu extends HTMLElement {
           transform: none;
         }
       </style>
-      <svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">
-        <path d="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7" />
-      </svg>
-      <div id="mask"></div>
-      <div id="menu">
+      <div id="icon">
+        <slot name="icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10">
+            <path d="M2,3L5,3L8,3M2,5L8,5M2,7L5,7L8,7" />
+          </svg>
+        </slot>
+      </div>
+      <div part="backdrop" id="backdrop"></div>
+      <div part="menu" id="menu">
         <slot></slot>
       </div>
     `
@@ -164,7 +192,7 @@ class ResponsiveMenu extends HTMLElement {
       .addEventListener('click', this.#onClickMenu)
     this
       .shadowRoot
-      .querySelector('#mask')
+      .querySelector('#backdrop')
       .addEventListener('click', () => this.close())
   }
 }

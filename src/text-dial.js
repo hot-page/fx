@@ -1,4 +1,5 @@
 class TextDial extends HTMLElement {
+  #intersectionObserver
 
   constructor() {
     super()
