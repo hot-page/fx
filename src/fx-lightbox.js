@@ -79,7 +79,7 @@ class FXLightbox extends HTMLElement {
 
   #render() {
     this.shadowRoot.innerHTML = `
-      <link rel="stylesheet" href="${import.meta.url}/../fx-lightbox.js">
+      <link rel="stylesheet" href="${import.meta.url}/../fx-lightbox.css">
       <dialog>
         <div id="close">
           <svg width="1em" height="1em" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
