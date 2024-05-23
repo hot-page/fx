@@ -3,6 +3,9 @@
  *  - opens with spacebar or enter when the icon is focused
  *  - aria attributes
  *  - use dialog element like hot-lightbox or perhaps popover?
+ *  - move the css properties for stroke-width etc to the svg inside #icon not on #icon itself
+ *  - buggy behavior: set state() let's you set to 'open' or 'closed' even if the media query isn't set so the style gets all fucked up
+ *  - the state could be represented as a custom pseudo class? https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_states_and_custom_state_pseudo-class_css_selectors
  */
 class ResponsiveMenu extends HTMLElement {
   static observedAttributes = ["media"];
@@ -82,6 +85,9 @@ class ResponsiveMenu extends HTMLElement {
 
         #icon {
           display: none;
+        }
+
+        #icon svg {
           width: 2rem;
           stroke: currentColor;
           stroke-width: .6;

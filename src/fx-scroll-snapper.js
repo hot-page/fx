@@ -5,6 +5,7 @@
  *
  * TODO:
  *  - dot indicators
+ *  - can use keyboard
  */
 
 class FxScrollSnapper extends HTMLElement {

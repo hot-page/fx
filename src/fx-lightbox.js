@@ -2,6 +2,7 @@
  *
  * TODO:
  *  - uses fx-scroll-snapper
+ *  - can use keyboard
  *  - updates the list of images if one is added or removed from the DOM
  */
 
