@@ -1,8 +1,10 @@
-<div style="text-align: center">
+<div align="center">
   <img
-    width="600"
+    width="250"
     src="https://hotpage.dev/api/images/7c8a2e06-759d-4610-8583-e8e07ed6b05f/versions/1500">
 </div>
+
+&nbsp;
 
 HotFX is a collection of standalone custom elements and frontend code snippets
 that are like wowwwwwww
