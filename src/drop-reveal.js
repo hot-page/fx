@@ -9,14 +9,14 @@ class DropReveal extends HTMLElement {
   _intersectionCallback(entries) {
     setTimeout(() => {
       if (entries[0].isIntersecting) {
-        this.reveal()
+        this.run()
       } else {
         this.hide()
       }
     }, 100)
   }
 
-  reveal() {
+  run() {
     this.shadowRoot.querySelector('.mask').classList.remove('reveal')
     void this.offsetHeight // trigger reflow
     this.shadowRoot.querySelector('.mask').classList.add('reveal')
@@ -35,6 +35,7 @@ class DropReveal extends HTMLElement {
 
         .mask {
           overflow: hidden;
+          position: relative;
         }
 
         .mask:before {

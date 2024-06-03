@@ -12,9 +12,10 @@ class ResponsiveMenu extends HTMLElement {
   static #defaultMedia = '(max-width: 800px)'
   #matchedMedia
 
+  // We're going to create a shadow DOM etc etc
   constructor() {
     super()
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: 'open' })
     this.#matchedMedia = window.matchMedia(this.#media)
     this.#matchedMedia.addEventListener('change', this.#onChangeMedia)
     this.state = this.#matchedMedia.matches ? 'closed' : 'visible'
