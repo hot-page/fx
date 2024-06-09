@@ -9,7 +9,51 @@ class FXJSDocs extends HTMLElement {
 
   constructor() {
     super()
+    this.innerHTML = `
+      <style>
+        fx-js-docs div {
+          border: 3px solid #eee;
+          border-top-color: var(--primary-color);
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          margin: 0 auto;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg) }
+        }
+      </style>
+      <div></div>
+    `
     this.#render()
+    this.addEventListener('click', this.#handleClick)
+  }
+
+  connectedCallback() {
+    window.addEventListener('hashchange', this.#handleHashChange)
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener('hashchange', this.#handleHashChange)
+  }
+
+  #handleHashChange = () => this.#highlightCurrentHash()
+
+  #highlightCurrentHash() {
+    Array.from(this.querySelectorAll('.fx-js-docs-row.linked'))
+      .forEach(el => el.classList.remove('linked'))
+    if (!window.location.hash) return
+    const el = this.querySelector(`.fx-js-docs-row[data-hash="${window.location.hash.slice(1)}"]`)
+    if (!el) return
+    el.classList.add('linked')
+  }
+
+  #handleClick = event => {
+    if (event.target.closest('a')) return
+    const row = event.target.closest('.fx-js-docs-row')
+    if (row) window.location.hash = row.dataset.hash
   }
 
   // This is where the magic happens. We download the stuff and boooom
@@ -27,36 +71,65 @@ class FXJSDocs extends HTMLElement {
     //
     // This is another paragraph
     const sections = tokens.reduce((sections, token, i) => {
-      let lastSection = sections[sections.length - 1]
+      let section = sections[sections.length - 1]
       const nextToken = tokens[i + 1]
-      if (token.type == 'comment' && lastSection.type == 'code') {
-        lastSection = {type: 'comment', tokens: []}
-        sections.push(lastSection)
+      // Create a comment section if we have a comment and the current one is
+      // a code section
+      if (section.type == 'code' && token.type == 'comment') {
+        section = {type: 'comment', tokens: []}
+        sections.push(section)
       } else if (
-        // This conditional is kind of insane but it's really the only thing I
-        // could find that works. The issue is that we want to include most 
-        // white space as "code" because that provides indentation of the code.
-        // However, Prism will also include white space between comments but
-        // we don't want to add that as "code" or there will be empty lines of
-        // "code" between for each line of a multi-line comment. Here we
-        // start a "code" block if the token is not a comment and the next token
-        // is also not a comment. That way a string between two comments will 
-        // not create an empty code block.
+        section.type == 'comment' &&
+        // This conditional is pretty wild but it's totally necessary.
+        // Basically, the problem is that Prism will show the white space
+        // between two comments as a plain string token and we need to prevent
+        // creating a blank code block between two comment lines because it's
+        // normal to wrap a paragraph of comment on many lines. BUT the white
+        // space after a comment and before a piece of code needs to start a
+        // new code block because that's crucial indentiation information. So,
+        // we start a new code block if the string has non-whitespace text, or
+        // if it's a highlighted thing, OR the next thing is a piece of code.
         (
-          (typeof token == 'object' && token.type != 'comment') ||
-          (typeof nextToken == 'object' && nextToken.type != 'comment')
-        ) &&
-        lastSection.type == 'comment'
+          typeof token == 'string' && /\S/.test(token) ||
+          typeof token == 'object' && token.type != 'comment' ||
+          typeof nextToken == 'object' && nextToken.type != 'comment'
+        ) 
       ) {
-        lastSection = {type: 'code', tokens: []}
-        sections.push(lastSection)
+        section = {type: 'code', tokens: []}
+        sections.push(section)
       }
-      lastSection.tokens.push(token)
+      section.tokens.push(token)
       return sections
     }, [{type: 'comment', tokens: []}])
 
-    const html = sections.map(section => {
-      if (section.type == 'code') {
+    const html = sections.map((section, i) => {
+      if (section.type == 'comment') {
+        const comment = section.tokens
+          .map(t => typeof t == 'object' ? t.content : t)
+          .join('')
+          // Remove the `//`, `/*` and `*` at the begining of the line
+          .replaceAll(/^\s*\/\* ?/mg, '')
+          .replaceAll(/^\s*\*\s ?/mg, '')
+          .replaceAll(/^\s*\/\/ ?/mg, '')
+          // Remove */ at the end of a line
+          .replaceAll(/\*\/\s*$/mg, '')
+          // This would be great but it's doing it inside code so forget it (for now)
+          // // opening singles
+          // .replace(/(^|[\s(\["])'(?!$|\s)/g, '$1\u2018')
+          // // closing singles & apostrophes
+          // .replace(/'/g, '\u2019')
+          // // opening doubles
+          // .replace(/(^|[/\[(\u2018\s])"(?!$|\s)/g, '$1\u201c')
+          // // closing doubles
+          // .replace(/"/g, '\u201d')
+          // // remove soft hyphens
+          // .replace(/\u00ad/g, '')
+          // en-dashes to em-dash. sad that this is necessary but it is.
+          .replace('\u2013', '\u2014')
+          // em-dashes
+          .replace(/--/g, '\u2014')
+        return `<div class="fx-js-docs-row" data-hash="section-${i/2}"><div class="comment-section">${marked.parse(comment)}</div>`
+      } else if (section.type == 'code') {
         const code = Prism.Token.stringify(
           Prism.util.encode(section.tokens),
           'javascript',
@@ -69,18 +142,7 @@ class FXJSDocs extends HTMLElement {
           // so that any empty lines are included (it seems that `<pre>` will
           // chomp the last newline anyway)
           .replace(/[ ]*$/, '')
-        return `<pre part="code" class="language-javascript"><code>${code}</code></pre>`
-      } else if (section.type == 'comment') {
-        const comment = section.tokens
-          .map(t => typeof t == 'object' ? t.content : t)
-          .join('')
-          // Remove the `//`, `/*` and `*` at the begining of the line
-          .replaceAll(/^\s*\/\*/mg, '')
-          .replaceAll(/^\s*\*\s/mg, '')
-          .replaceAll(/^\s*\/\//mg, '')
-          // Remove */ at the end of a line
-          .replaceAll(/\*\/\s*$/mg, '')
-        return `<section part="comment">${marked.parse(comment)}</section>`
+        return `<pre class="code-section" class="language-javascript"><code>${code}</code></pre></div>`
       }
     }).join('')
 
@@ -88,6 +150,13 @@ class FXJSDocs extends HTMLElement {
     // rules. In this case `pre { margin: 0; }` would not apply because it is
     // set inside that document
     this.innerHTML = html
+
+    this.#highlightCurrentHash()
+    this.querySelector('.fx-js-docs-row.linked')?.scrollIntoView({ block: 'center' })
+
+    // Now highlight the code in comments using Prism
+    Array.from(this.querySelectorAll('.fx-js-docs-row .comment-section code'))
+      .forEach(el => Prism.highlightElement(el))
   }
 }
 
