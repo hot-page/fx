@@ -11,6 +11,8 @@ that are like wowwwwwww
 
 Read more at [fx.hot.page](https://fx.hot.page/).
 
+[A Year of Web Components](https://hot.page/takes/year-of-web-components)
+
 Created for sites built on [Hot Page](hot.page).
 
 

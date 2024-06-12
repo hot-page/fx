@@ -1,40 +1,37 @@
-// All of the logic and DOM structure for the menu is handled in the element's
+// All of the logic and DOM structure for the menu is handled in this
 // class. Extending `HTMLElement` let's us define a custom element to use
 // anywherew in HTML.
-class FXResponsiveMenu extends HTMLElement {
-  // The `width=` attribute is used to control the breakpoint where the menu
+class HotFXResponsiveMenu extends HTMLElement {
+  // The `width` attribute is used to control the breakpoint where the menu
   // will switch from showing the menu items in a row to moving them to the
   // drawer. This is the width of the browser window where the change will be
   // made, set with a media query with `max-width`.
   static observedAttributes = ["width"];
-  // If no `width=` attribute is set, the element will use 800 pixels as the
+  // If no `width` attribute is set, the element will use 800 pixels as the
   // default breakpoint.
   static #defaultWidth = '800'
-  // The element's media query, which makes it re-render when the browser width
-  // crosses the breakpoint.
+  // The element's media query, which will trigger it to re-render itself when
+  // the browser width crosses the breakpoint.
   #mediaQuery
-  // ElementInternals allow us to set states for the drawer when it opens or
-  // closes. This element only has one state for `open` which is when it's 
-  // Note that when the hamburger is not shown, neither state is set.
-  #internals
 
   constructor() {
     super()
-    this.#internals = this.attachInternals();
 
-    // Create the #mediaQuery which listens for our breakpoint.
+    // Call an internal function to create the #mediaQuery which listens for
+    // our breakpoint.
     this.#createMediaQuery()
 
-    // The `keydown` handler is for hitting the <kbd>Esc</kbd> key to close the menu.
+    // The `keydown` handler is for hitting the <kbd>Esc</kbd> key to close the
+    // menu.
     this.addEventListener('keydown', this.#handleKeyDown)
 
     // Create the shadow DOM and render our component there, slotting in the 
-    // links that the user has provided as light DOM.
+    // links or other content that the user has provided as light DOM.
     this.attachShadow({ mode: 'open' })
     this.#render()
   }
  
-  // When the `width=` attribute is changed we need to recreate
+  // When the `width` attribute is changed we need to recreate
   // `this.#mediaQuery` so that it responds at the new breakpoint.
   attributeChangedCallback() {
     this.#createMediaQuery()
@@ -46,47 +43,48 @@ class FXResponsiveMenu extends HTMLElement {
   }
 
   // Removes the `hashchange` listener when disconnected from the DOM so that we
-  // don't leak memory
+  // don't leak memory all over the place and create a big mess on the reader's 
+  // lap.
   disconnectedCallback() {
     window.removeEventListener('hashchange', this.#handleHashChange)
   }
 
-  // `.open()` public method that allows you to imperatively open or close the menu,
-  // perhaps with another button besides the hamburger icon. Use it like this:
+  // The `.open()` public method that allows you to imperatively open or close
+  // the menu, perhaps with another button besides the hamburger icon. Use it
+  // like this:
   //
   // ````javascript
-  // document.querySelector('fx-responsive-menu').open()
+  // document.querySelector('hotfx-responsive-menu').open()
   // ````
   open() {
     // If the menu is not in the drawer state, we had better do nothing because
     // there are side effects here that will be quite bad otherwise --
     // especially preventing all scrolling of the page.
     if (!this.#mediaQuery.matches) return
-    // This adds an internal state that will show the menu with CSS using a 
-    // `:state(open)` selector.
-    this.#internals.states.add('open')
+    // Set the `open` attribute which is used internally for styling
+    this.setAttribute('open', '')
     // We prevent scrolling of the entire page while the menu is open. It might
-    // have been nice to use `overscroll-behavior` but it wouldn't have worked
-    // to prevent scrolling on the #backdrop element.
+    // have been nice to use the `overscroll-behavior` but it wasn't working to
+    // prevent scrolling on the #backdrop element.
     document.body.style.overflow = 'hidden'
     // The `aria-expanded` attribute on the drawer indicates to screen readers
     // that the `<nav>` is visible.
     this.shadowRoot.querySelector('nav').setAttribute('aria-expanded', 'true')
   }
 
-  // The `.close()` imperative method will close the menu. You could use this,
-  // for example, to add another button to the menu itself to close. So
+  // The `.close()` method will imperatively close the menu. You could use this,
+  // for example, to add another button to the menu itself to close it. So
   // something like this:
   //
   // ````html
-  // <button onclick="this.closest('fx-responsive-menu').close()">
+  // <button onClick="this.closest('hotfx-responsive-menu').close()">
   //   Close
   // </button>
   // ````
   close() {
-    // Removing the internal state is what will trigger the transition closing 
+    // Remove the `open` attribute is what will trigger the transition closing 
     // the drawer in CSS.
-    this.#internals.states.delete('open')
+    this.removeAttribute('open')
     // Removes the scrolling lock that we added to the `<body>` in `open()`.
     document.body.style.overflow = ''
     // Resets the `aria-expanded` attribute on our `<nav>` element.
@@ -97,80 +95,103 @@ class FXResponsiveMenu extends HTMLElement {
   // closed or closed to open. This is used internally as the click handler on
   // the button because the same button both opens and closes the menu.
   toggle() {
-    this.#internals.states.has('open') ? this.close() : this.open()
+    this.hasAttribute('open') ? this.close() : this.open()
   }
 
   // Here we create `this.#mediaQuery` which makes the menu respond as the
   // browser width crosses the breakpoint.
   #createMediaQuery() {
     // First clean up the existing event listener if it exists. This method is
-    // called everytime the `width=` attribute is changed so we have to cleanup
-    // or we'll leak memory and bad things could happen.
+    // called everytime the `width` attribute is changed so we have to cleanup
+    // or we'll leak memory.
     this.#mediaQuery?.removeEventListener('change', this.#handleChangeMedia)
-    // We validate that the `width=` attribute is a number before using it or 
-    // there will be no breakpoint and the menu will never turn into the drawer.
-    if (Number.isNaN(Number(this.getAttribute('width')))) {
-      console.error(
-        'The <fx-responsive-menu> element received an invalid value for the ' +
-        'width= attribute: "' +
-        this.getAttribute('width') +
-        '" is not a number. The default value (' +
-        FXResponsiveMenu.#defaultWidth +
-        ') will be used instead.',
+    // We validate that the `width` attribute is a positive integer before using
+    // it or the media query might be invalid and the menu will never turn into a
+    // drawer.
+    const widthAttributeIsValid = this.hasAttribute('width') && !/\D/.test(this.getAttribute('width'))
+    if (this.hasAttribute('width') && !widthAttributeIsValid) {
+      console.error(`
+        The <hotfx-responsive-menu> element received an invalid value for the \
+        width attribute. "${this.getAttribute('width')}" is not a valid number. The \
+        default value (${HotFXResponsiveMenu.#defaultWidth}) will be used instead.`
+        // This `replace()` just cleans up the whitespace in the message
+        .replace(/\s+/g, ' '),
       )
     }
-    const width = this.getAttribute('width') || FXResponsiveMenu.#defaultWidth
+    const width = widthAttributeIsValid
+      ? this.getAttribute('width')
+      : HotFXResponsiveMenu.#defaultWidth
     this.#mediaQuery = window.matchMedia(`(max-width: ${width}px)`)
+    // Listening to the `change` event will fire our handler when the browser's
+    // width has crosses the breakpoint, allowing us to re-render
     this.#mediaQuery.addEventListener('change', this.#handleChangeMedia)
   }
 
-  // This handler will be called when the browser crosses our breakpoint, and
-  // we must re-render the component to respond to the change.
+  // The handler for the media query breakpoint that we set in the line above.
   #handleChangeMedia = (event) => {
-    if (event.target.matches) {
-      this.#render()
-    } else {
-      // The drawer might be open right now, which means that we must call
-      // `close()` before re-rendering everything as a static menu. In the
-      // `open()` method we prevent scrolling on the body, so if we don't call
-      // this to reverse it, the user will not be able to scroll the page at
-      // all!
-      this.close()
-      this.#render()
-    }
+    // The drawer might be open right now, which means that we must call
+    // `close()` before re-rendering everything as a static menu. In the
+    // `open()` method we prevent scrolling on the body, so if we don't call
+    // this to reverse it, the user will not be able to scroll the page at all!
+    if (!event.target.matches) this.close()
+    // Either way, we must re-render the component's DOM structure to respond
+    // to the change in the breakpoint
+    this.#render()
   }
 
   // The `hashchange` event signals a navigation to a link internal to the page.
-  // Since the user has clicked a link in the menu, we close it when that
-  // happens.
+  // Since the user has clicked a link in the menu, we close it so since they're
+  // likely done using it and want to see the content for the link they've cliked
+  // on.
   #handleHashChange = () => this.close()
 
-  // This handler will only be fired if the focus is inside the menu, but that's 
-  // fairly likely given that they just used the button to open the menu.
+  // This `keydown` handler will only be fired if the focus is inside the menu,
+  // but that's actually fairly likely given that they just used the button to
+  // open the menu.
   #handleKeyDown = (event) => {
     if (event.key == 'Escape') this.close()
   }
 
-  // The component's DOM has two different states based on the breakpoint.
+  // The component's DOM has two completely different structures based on the
+  // breakpoint. Here we render one or the other to our `shadowRoot`.
   #render() {
     // If the `max-width` media query is not matched, then the layout for this
     // element is really quite simple. The hamburger is not shown and the menu
     // items should be always visible so this is really just a passthrough. It
     // might not even need shadow DOM at all but we need it in the other state.
     if (!this.#mediaQuery.matches) {
+      // Setting the state attribute lets the user style links or other menu
+      // light DOM content in a different way when it is static vs in a drawer.
+      // Use them like this:
+      //
+      // ````css
+      // hotfx-responsive-menu[state="static"] a {
+      //   color: cornflowerblue;
+      // }
+      // ````
+      this.setAttribute('state', 'static')
       this.shadowRoot.innerHTML = [`
         <style>
           :host {
             display: block;
+          }`,
+          // Flexbox is pretty much the perfect way to layout options for a
+          // static.
+          `nav {
+            display: flex;
+            gap: 32px;
           }
         </style>`,
-        // Here we add `part="navbar"` to allow styling of the menu in it's 
-        // non-drawer state.
-        `<nav part="navbar" aria-label="Site navigation">
+        // Here we add `part="static"` to allow styling of the menu itself
+        // in it's non-drawer state with `:part(static)`. The user may wish to
+        // override the `gap` property set above.
+        `<nav part="static" aria-label="Site navigation">
           <slot></slot>
         </nav>
       `].join('')
     } else {
+      // Set the state to drawer
+      this.setAttribute('state', 'drawer')
       // Here we render the menu whith our hamburger icon and the drawer that 
       // pops in from the side. This is the where the real meat of the
       // component takes shape.
@@ -193,11 +214,13 @@ class FXResponsiveMenu extends HTMLElement {
             border: none;
             padding: 0;
             background: none;
+            cursor: pointer;
             position: relative;
             z-index: 5;
-          }
-
-          button svg {
+          }`,
+          // Setting the stroke to currentColor let's the user change the color
+          // of the menu with the CSS `color:` property.
+          `button svg {
             display: block;
             width: 2rem;
             stroke: currentColor;
@@ -208,13 +231,15 @@ class FXResponsiveMenu extends HTMLElement {
           // The hamburger icon is from [a CodePen by Owen Shepherd](https://codepen.io/shephero/pen/LYVrdjX) -- thank you, Owen!
           //
           // Changing the `d` attribute here in CSS does the cool morph thing
-          // using `transition`. Note that in order for this to work you must have
-          // the same number of anchor points of the same type.
+          // using `transition`.
           `button path {
             transition: d 300ms ease-out;
           }
-
-          :host(:state(open)) button path {
+          `,
+          // Note that in order for this morph effect to work the path must
+          // have the same number of anchor points and they must be of the 
+          // same type.
+          `:host([open]) button path {
             d: path('M3,3L5,5L7,3M5,5L5,5M3,7L5,5L7,7');
           }`,
           // Here we style the drawer as a `position: fixed` element. It also
@@ -231,6 +256,7 @@ class FXResponsiveMenu extends HTMLElement {
             display: flex;
             flex-flow: column nowrap;
             z-index: 4;
+            gap: 8px;
             padding: 64px 32px 32px 32px;
             background: white;
           }`,
@@ -243,11 +269,11 @@ class FXResponsiveMenu extends HTMLElement {
             transform: translateX(-100%);
           }
 
-          :host(:state(open)) nav {
+          :host([open]) nav {
             transform: none;
           }`,
-          // The backdrop is the grey color that appears behind the drawer. It's
-          // a translucent black color by default.
+          // The backdrop appears behind the drawer while it's open to obscure
+          // the page. It's a translucent black color by default.
           `#backdrop {
             position: fixed;
             inset: 0;
@@ -259,7 +285,7 @@ class FXResponsiveMenu extends HTMLElement {
             `transition: opacity 300ms ease-out, visibility 300ms;
           }
 
-          :host(:state(open)) #backdrop {
+          :host([open]) #backdrop {
             visibility: visible;
             opacity: 1;
           }
@@ -283,6 +309,8 @@ class FXResponsiveMenu extends HTMLElement {
         // appears
         `<div part="backdrop" id="backdrop"></div>`,
       ].join('')
+      // The same hamburger button turns into an X and will toggle the menu
+      // open or closed.
       this
         .shadowRoot
         .querySelector('button')
@@ -297,5 +325,5 @@ class FXResponsiveMenu extends HTMLElement {
 }
 
 // Registering the above class as a custom element let's us use it in HTML,
-// like `<fx-responsive-menu>`
-customElements.define('fx-responsive-menu', FXResponsiveMenu)
+// like `<hotfx-responsive-menu>`
+customElements.define('hotfx-responsive-menu', HotFXResponsiveMenu)
