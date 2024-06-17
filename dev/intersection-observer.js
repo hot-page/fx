@@ -1,4 +1,3 @@
-
 // The <interection-observer> mimcs the JavaScript API of IntersectionObserver.
 // TODO:
 //   - add attributes for root, rootMargin, threshold

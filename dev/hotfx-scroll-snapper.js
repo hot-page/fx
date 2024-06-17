@@ -8,7 +8,7 @@
  *  - can use keyboard
  */
 
-class FxScrollSnapper extends HTMLElement {
+class HotFxScrollSnapper extends HTMLElement {
   #thumbnailScrollResetTimeout
   #intersectionObserver 
 
@@ -146,4 +146,4 @@ class FxScrollSnapper extends HTMLElement {
   }
 }
 
-customElements.define('fx-scroll-snapper', FxScrollSnapper)
+customElements.define('hotfx-scroll-snapper', HotFxScrollSnapper)

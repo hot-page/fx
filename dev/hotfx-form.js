@@ -1,11 +1,11 @@
 
 document.head.insertAdjacentHTML('beforeend', `
 <style>
-  fx-form {
+  hotfx-form {
     position: relative;
   }
 
-  fx-form .fx-form-submitted {
+  hotfx-form .hotfx-form-submitted {
     display: none;
     position: absolute;
     top: 50%;
@@ -13,23 +13,23 @@ document.head.insertAdjacentHTML('beforeend', `
     transform: translate(-50%, -50%);
   }
 
-  fx-form.submitted .fx-form-submitted {
+  hotfx-form.submitted .hotfx-form-submitted {
     display: block;
   }
-  fx-form.submitted form {
+  hotfx-form.submitted form {
     visibility: hidden;
   }
 
-  fx-form button {
+  hotfx-form button {
     position: relative;
   }
 
-  fx-form.loading button {
+  hotfx-form.loading button {
     color: transparent;
     pointer-events: none;
   }
 
-  fx-form.loading button:before {
+  hotfx-form.loading button:before {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -50,7 +50,7 @@ document.head.insertAdjacentHTML('beforeend', `
 `)
 
 
-class FXForm extends HTMLElement {
+class HotFXForm extends HTMLElement {
   constructor() {
     super()
     this.addEventListener('submit', async event => {
@@ -81,4 +81,4 @@ class FXForm extends HTMLElement {
   }
 }
 
-customElements.define('fx-form', HotForm)
+customElements.define('hotfx-form', HotFXForm)

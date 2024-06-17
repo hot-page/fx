@@ -1,4 +1,4 @@
-class FXGyroscope extends HTMLElement {
+class HotFXGyroscope extends HTMLElement {
   #start
 
   constructor() {
@@ -18,4 +18,4 @@ class FXGyroscope extends HTMLElement {
   }
 }
 
-customElements.define('fx-gyroscope', FXGyroscope)
+customElements.define('hotfx-gyroscope', HotFXGyroscope)
