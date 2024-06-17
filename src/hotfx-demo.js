@@ -19,11 +19,11 @@ class HotFXDemo extends HTMLElement {
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, "text/html")
     this.shadowRoot.querySelector('#source code').textContent = `
+    ${Array.from(doc.querySelectorAll('script')).filter(el => !el.src.includes('user_document')).map(el => el.outerHTML).join('\n')}
     ${doc.querySelector('head style').outerHTML.replace('      @layers external, internal;\n\n', '')}
     ${doc.body.innerHTML}`
     Prism.highlightElement(this.shadowRoot.querySelector('#source code'))
     const body = this.shadowRoot.querySelector('#body')
-
     if (this.hasAttribute('use-iframe')) {
       const iframe = document.createElement('iframe')
       iframe.srcdoc = html
@@ -38,6 +38,29 @@ class HotFXDemo extends HTMLElement {
     }
   }
 
+  #handleCopyClick = () => {
+    const el = document.createElement('pre')
+    el.style.width = '1px'
+    el.style.height = '1px'
+    el.style.position = 'fixed'
+    el.style.top = '5px'
+    el.textContent = this.shadowRoot.querySelector('#source').textContent.trim()
+    document.body.appendChild(el)
+    const selection = getSelection()
+    selection.removeAllRanges()
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    selection.addRange(range)
+    document.execCommand('copy')
+    selection.removeAllRanges()
+    document.body.removeChild(el)
+    this.shadowRoot.querySelector('#copy span').textContent = 'Copied!'
+    setTimeout(() => {
+      this.shadowRoot.querySelector('#copy span').textContent = 'Copy'
+    }, 2000)
+  }
+
+
   #render() {
     this.shadowRoot.innerHTML = `
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
@@ -50,6 +73,12 @@ class HotFXDemo extends HTMLElement {
           max-width: 800px;
           margin: 0 auto;
           padding: 16px;
+        }
+
+        @media (max-width: 800px) {
+          .container {
+            padding: 12px 8px;
+          }
         }
 
         header {
@@ -71,12 +100,19 @@ class HotFXDemo extends HTMLElement {
 
         #body {
           background-color: white;
+          overflow: auto;
         }
 
         #body iframe {
           margin: 16px;
           margin-left: calc(50% - 400px + 16px);
           border: 1px solid var(--secondary-color);
+        }
+
+        @media (max-width: 800px) {
+          #body iframe {
+            margin: 16px;
+          }
         }
 
         #source {
@@ -117,7 +153,6 @@ class HotFXDemo extends HTMLElement {
           gap: 16px;
         }
 
-
         footer button,
         footer .button {
           color: white;
@@ -133,6 +168,13 @@ class HotFXDemo extends HTMLElement {
           gap: 4px;
         }
 
+        @media (max-width: 800px) {
+          footer button,
+          footer .button {
+            font-size: 14px;
+          }
+        }
+
         footer button:hover,
         footer .button:hover {
           color: var(--primary-color);
@@ -143,7 +185,7 @@ class HotFXDemo extends HTMLElement {
           transform: scale(.95);
         }
 
-        footer button.html span::before {
+        footer button.html abbr::before {
           content: 'Show ';
         }
 
@@ -155,7 +197,7 @@ class HotFXDemo extends HTMLElement {
           rotate: 180deg;
         }
 
-        footer.html-expanded button.html span::before {
+        footer.html-expanded button.html abbr::before {
           content: 'Hide ';
         }
 
@@ -209,12 +251,12 @@ class HotFXDemo extends HTMLElement {
         <div class="container">
           <button class="html">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 21"><path fill="currentColor" d="M12.12 9.792 11 10.913v-4.17a1 1 0 0 0-2 0v4.17l-1.121-1.12a1 1 0 1 0-1.414 1.413l2.828 2.828a.995.995 0 0 0 1.083.22 1 1 0 0 0 .33-.22l2.828-2.827a1 1 0 0 0-1.414-1.415m2.878-8.209C10.217-1.177 4.102.461 1.341 5.243S.218 16.14 5.001 18.901c4.781 2.76 10.897 1.122 13.657-3.66 2.762-4.782 1.123-10.897-3.66-13.658m1.929 12.658a7.999 7.999 0 1 1-13.854-8 7.999 7.999 0 0 1 13.854 8"/></svg>
-            <span>HTML</span>
+            <abbr>HTML</abbr>
           </button>
           <div class="right">
-            <button>
+            <button id="copy">
               <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="200px" width="200px" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0V0z"></path><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
-              Copy
+              <span>Copy</span>
             </button>
             <a
               class="button"
@@ -238,6 +280,10 @@ class HotFXDemo extends HTMLElement {
       .shadowRoot
       .querySelector('button.html')
       .addEventListener('click', () => this.toggleHTML())
+    this
+      .shadowRoot
+      .querySelector('#copy')
+      .addEventListener('click', this.#handleCopyClick)
   }
 }
 

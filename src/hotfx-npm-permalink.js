@@ -1,4 +1,4 @@
-class FXNPMPermalink extends HTMLElement {
+class HotFXNPMPermalink extends HTMLElement {
   #link
 
   constructor() {
@@ -8,21 +8,21 @@ class FXNPMPermalink extends HTMLElement {
   }
 
   copy() {
-    const node = document.createElement('pre')
-    node.style.width = '1px'
-    node.style.height = '1px'
-    node.style.position = 'fixed'
-    node.style.top = '5px'
-    node.textContent = this.#link
-    document.body.appendChild(node)
+    const el = document.createElement('pre')
+    el.style.width = '1px'
+    el.style.height = '1px'
+    el.style.position = 'fixed'
+    el.style.top = '5px'
+    el.textContent = this.#link
+    document.body.appendChild(el)
     const selection = getSelection()
     selection.removeAllRanges()
     const range = document.createRange()
-    range.selectNodeContents(node)
+    range.selectNodeContents(el)
     selection.addRange(range)
     document.execCommand('copy')
     selection.removeAllRanges()
-    document.body.removeChild(node)
+    document.body.removeChild(el)
     this.shadowRoot.querySelector('#container').classList.add('copied')
     setTimeout(() => {
       this.shadowRoot.querySelector('#container').classList.remove('copied')
@@ -46,8 +46,10 @@ class FXNPMPermalink extends HTMLElement {
         }
 
         svg {
-          height: 1em;
-          width: 1em;
+          height: 1.2em;
+          width: 1.2em;
+          position: relative;
+          top: 0.1em;
         }
 
         #success {
@@ -65,11 +67,11 @@ class FXNPMPermalink extends HTMLElement {
       <div id="container">
         <span id="link" part="link">${this.#link}</span>
         <svg id="success" fill="currentColor" viewBox="0 0 448 512" height="200px" width="200px" xmlns="http://www.w3.org/2000/svg"><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg>
-        <svg id="copy" fill="currentColor" viewBox="0 0 384 512" height="200px" width="200px" xmlns="http://www.w3.org/2000/svg"><path d="M192 0c-41.8 0-77.4 26.7-90.5 64H64C28.7 64 0 92.7 0 128V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V128c0-35.3-28.7-64-64-64H282.5C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM112 192H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"></path></svg>
+        <svg id="copy" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>
       </div>
     `
     this.shadowRoot.querySelector('#copy').addEventListener('click', () => this.copy())
   }
 }
 
-customElements.define('fx-npm-permalink', FXNPMPermalink)
+customElements.define('hotfx-npm-permalink', HotFXNPMPermalink)

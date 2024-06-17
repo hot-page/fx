@@ -5,13 +5,15 @@ import 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js'
 // [Marked](https://github.com/markedjs/marked) is a great markdown library
 import { marked } from 'https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.esm.min.js'
 
-class FXJSDocs extends HTMLElement {
+let linkIcon = ''
+
+class HotFXJSDocs extends HTMLElement {
 
   constructor() {
     super()
     this.innerHTML = `
       <style>
-        fx-js-docs div {
+        hotfx-js-docs div {
           border: 3px solid #eee;
           border-top-color: var(--primary-color);
           border-radius: 50%;
@@ -28,7 +30,6 @@ class FXJSDocs extends HTMLElement {
       <div></div>
     `
     this.#render()
-    this.addEventListener('click', this.#handleClick)
   }
 
   connectedCallback() {
@@ -42,18 +43,13 @@ class FXJSDocs extends HTMLElement {
   #handleHashChange = () => this.#highlightCurrentHash()
 
   #highlightCurrentHash() {
-    Array.from(this.querySelectorAll('.fx-js-docs-row.linked'))
+    Array.from(this.querySelectorAll('.hotfx-js-docs-row.linked'))
       .forEach(el => el.classList.remove('linked'))
     if (!window.location.hash) return
-    const el = this.querySelector(`.fx-js-docs-row[data-hash="${window.location.hash.slice(1)}"]`)
+    const el = this.querySelector(`.hotfx-js-docs-row[data-hash="${window.location.hash.slice(1)}"]`)
     if (!el) return
     el.classList.add('linked')
-  }
-
-  #handleClick = event => {
-    if (event.target.closest('a')) return
-    const row = event.target.closest('.fx-js-docs-row')
-    if (row) window.location.hash = row.dataset.hash
+    this.querySelector('.hotfx-js-docs-row.linked')?.scrollIntoView({ block: 'center' })
   }
 
   // This is where the magic happens. We download the stuff and boooom
@@ -128,7 +124,15 @@ class FXJSDocs extends HTMLElement {
           .replace('\u2013', '\u2014')
           // em-dashes
           .replace(/--/g, '\u2014')
-        return `<div class="fx-js-docs-row" data-hash="section-${i/2}"><div class="comment-section">${marked.parse(comment)}</div>`
+          .replace(/(\s|$)HTML([\s.])/g, '$1<abbr>HTML</abbr>$2')
+          .replace(/(\s|$)CSS([\s.])/g, '$1<abbr>CSS</abbr>$2')
+          .replace(/(\s|$)DOM([\s.])/g, '$1<abbr>DOM</abbr>$2')
+        return `
+          <div class="hotfx-js-docs-row" data-hash="section-${i/2}">
+            <div class="comment-section">
+              <a class="section-link" href="#section-${i/2}">${linkIcon}</a>
+              ${marked.parse(comment)}
+            </div>`
       } else if (section.type == 'code') {
         const code = Prism.Token.stringify(
           Prism.util.encode(section.tokens),
@@ -142,7 +146,9 @@ class FXJSDocs extends HTMLElement {
           // so that any empty lines are included (it seems that `<pre>` will
           // chomp the last newline anyway)
           .replace(/[ ]*$/, '')
-        return `<pre class="code-section" class="language-javascript"><code>${code}</code></pre></div>`
+        return `
+            <pre class="code-section" class="language-javascript"><code>${code}</code></pre>
+          </div>` // closes <div> of the row opened in comment section
       }
     }).join('')
 
@@ -152,12 +158,13 @@ class FXJSDocs extends HTMLElement {
     this.innerHTML = html
 
     this.#highlightCurrentHash()
-    this.querySelector('.fx-js-docs-row.linked')?.scrollIntoView({ block: 'center' })
 
     // Now highlight the code in comments using Prism
-    Array.from(this.querySelectorAll('.fx-js-docs-row .comment-section code'))
+    Array.from(this.querySelectorAll('.hotfx-js-docs-row .comment-section code'))
       .forEach(el => Prism.highlightElement(el))
   }
 }
 
-customElements.define('fx-js-docs', FXJSDocs)
+customElements.define('hotfx-js-docs', HotFXJSDocs)
+
+linkIcon = `<svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 640 512" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg"><path d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"></path></svg>`

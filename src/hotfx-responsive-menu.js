@@ -123,7 +123,7 @@ class HotFXResponsiveMenu extends HTMLElement {
       : HotFXResponsiveMenu.#defaultWidth
     this.#mediaQuery = window.matchMedia(`(max-width: ${width}px)`)
     // Listening to the `change` event will fire our handler when the browser's
-    // width has crosses the breakpoint, allowing us to re-render
+    // width has crossed the breakpoint, allowing us to re-render
     this.#mediaQuery.addEventListener('change', this.#handleChangeMedia)
   }
 
@@ -161,8 +161,8 @@ class HotFXResponsiveMenu extends HTMLElement {
     // might not even need shadow DOM at all but we need it in the other state.
     if (!this.#mediaQuery.matches) {
       // Setting the state attribute lets the user style links or other menu
-      // light DOM content in a different way when it is static vs in a drawer.
-      // Use them like this:
+      // light DOM content in a different way when it is static or slotted into
+      // the drawer. Use them like this:
       //
       // ````css
       // hotfx-responsive-menu[state="static"] a {
@@ -219,7 +219,7 @@ class HotFXResponsiveMenu extends HTMLElement {
             z-index: 5;
           }`,
           // Setting the stroke to currentColor let's the user change the color
-          // of the menu with the CSS `color:` property.
+          // of the menu with the CSS `color` property.
           `button svg {
             display: block;
             width: 2rem;
