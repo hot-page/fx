@@ -1,7 +1,9 @@
 <div align="center">
-  <img
-    width="250"
-    src="https://hotpage.dev/api/images/7c8a2e06-759d-4610-8583-e8e07ed6b05f/versions/1500">
+  <picture>
+    <source width="300" media="(prefers-color-scheme: dark)" srcset="https://static.hot.page/hotfx-logo-white.svg">
+    <source width="300" media="(prefers-color-scheme: light)" srcset="https://static.hot.page/hotfx-logo.svg">
+    <img width="300" src="https://static.hot.page/hotfx-logo.svg">
+  </picture>
 </div>
 
 &nbsp;
