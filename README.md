@@ -54,6 +54,11 @@ brew install mkcert mkcert -install mkcert localhost
 This will generate the certificate in this directory and you should be able to
 then run the server as described above.
 
+## A Hot Page Project
+
+This open-source project is built by the engineeers at [Hot Page](https://hot.page), a tool for web
+design and development.
+
 &nbsp;
 
 <p align="center">
@@ -61,3 +66,5 @@ then run the server as described above.
     <img width="250" src="https://static.hot.page/logo.png">
   </a>
 </p>
+
+&nbsp;
