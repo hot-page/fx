@@ -201,10 +201,6 @@ class HotFXResponsiveMenu extends HTMLElement {
             display: flex;
             flex-flow: row nowrap;
             justify-content: flex-end;
-          }
-
-          :host[position=left] {
-            justify-content: flex-start;
           }`,
           // Our hamburger icon uses the HTML `<button>` element so that it 
           // properly handles focus, keyboard commands and accessibility.
@@ -260,8 +256,8 @@ class HotFXResponsiveMenu extends HTMLElement {
             padding: 64px 32px 32px 32px;
             background: white;
           }`,
-          // These two CSS rules with four properties are the only thing that
-          // will move the drawer to left side when you set the
+          // This CSS rule with three properties is the only thing needed to
+          // move the drawer to left side when you set the
           // `position=left` attribute.
           `:host([position="left"]) nav {
             left: 0;

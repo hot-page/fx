@@ -33,8 +33,8 @@ class HotFXNPMPermalink extends HTMLElement {
     const pkg = this.getAttribute('package')
     const response = await fetch(`https://registry.npmjs.org/${pkg}/latest`)
     const data = await response.json()
-    const file = this.getAttribute('file') || data.main
-    this.#link = `https://cdn.jsdelivr.net/npm/${pkg}@${data.version}/${file}`
+    const file = this.getAttribute('file') ? '/' + this.getAttribute('file') : ''
+    this.#link = `https://cdn.jsdelivr.net/npm/${pkg}@${data.version}${file}`
     this.shadowRoot.innerHTML = `
       <style>
         #link {

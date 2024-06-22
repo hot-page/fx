@@ -20,7 +20,9 @@ class HotFXDemo extends HTMLElement {
     const doc = parser.parseFromString(html, "text/html")
     this.shadowRoot.querySelector('#source code').textContent = `
     ${Array.from(doc.querySelectorAll('script')).filter(el => !el.src.includes('user_document')).map(el => el.outerHTML).join('\n')}
-    ${doc.querySelector('head style').outerHTML.replace('      @layers external, internal;\n\n', '')}
+    ${doc.querySelector('head style').outerHTML
+      .replace('      @layers external, internal;\n\n', '')
+      .replace('      @layers external, internal;\n', '')}
     ${doc.body.innerHTML}`
     Prism.highlightElement(this.shadowRoot.querySelector('#source code'))
     const body = this.shadowRoot.querySelector('#body')

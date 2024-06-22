@@ -32,26 +32,6 @@ class HotFXJSDocs extends HTMLElement {
     this.#render()
   }
 
-  connectedCallback() {
-    window.addEventListener('hashchange', this.#handleHashChange)
-  }
-
-  disconnectedCallback() {
-    window.removeEventListener('hashchange', this.#handleHashChange)
-  }
-
-  #handleHashChange = () => this.#highlightCurrentHash()
-
-  #highlightCurrentHash() {
-    Array.from(this.querySelectorAll('.hotfx-js-docs-row.linked'))
-      .forEach(el => el.classList.remove('linked'))
-    if (!window.location.hash) return
-    const el = this.querySelector(`.hotfx-js-docs-row[data-hash="${window.location.hash.slice(1)}"]`)
-    if (!el) return
-    el.classList.add('linked')
-    this.querySelector('.hotfx-js-docs-row.linked')?.scrollIntoView({ block: 'center' })
-  }
-
   // This is where the magic happens. We download the stuff and boooom
   // Second line
   async #render() {
@@ -128,7 +108,7 @@ class HotFXJSDocs extends HTMLElement {
           .replace(/(\s|$)CSS([\s.])/g, '$1<abbr>CSS</abbr>$2')
           .replace(/(\s|$)DOM([\s.])/g, '$1<abbr>DOM</abbr>$2')
         return `
-          <div class="hotfx-js-docs-row" data-hash="section-${i/2}">
+          <div class="hotfx-js-docs-row" id="section-${i/2}">
             <div class="comment-section">
               <a class="section-link" href="#section-${i/2}">${linkIcon}</a>
               ${marked.parse(comment)}
@@ -156,8 +136,6 @@ class HotFXJSDocs extends HTMLElement {
     // rules. In this case `pre { margin: 0; }` would not apply because it is
     // set inside that document
     this.innerHTML = html
-
-    this.#highlightCurrentHash()
 
     // Now highlight the code in comments using Prism
     Array.from(this.querySelectorAll('.hotfx-js-docs-row .comment-section code'))

@@ -1,0 +1,28 @@
+{
+  "name": "@hot-page/hotfx-responsive-menu",
+  "version": "0.0.0",
+  "description": "A custom HTML element for a nav menu that turns into a hamburger button and drawer at a given breakpoint.",
+  "main": "hotfx-responsive-menu.js",
+  "scripts": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hot-page/fx.git"
+  },
+  "keywords": [
+    "custom",
+    "element",
+    "web",
+    "component",
+    "hamburger",
+    "menu",
+    "drawer",
+    "html",
+    "element"
+  ],
+  "author": "Hot Page",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hot-page/fx/issues"
+  },
+  "homepage": "https://fx.hot.page/responsive-menu"
+}
