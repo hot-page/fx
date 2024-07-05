@@ -18,17 +18,20 @@ class HotFXDemo extends HTMLElement {
     const html = await response.text()
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, "text/html")
-    this.shadowRoot.querySelector('#source code').textContent = `
-    ${Array.from(doc.querySelectorAll('script')).filter(el => !el.src.includes('user_document')).map(el => el.outerHTML).join('\n')}
+    doc.querySelectorAll('script:not([src*="jsdelivr"]):not([src*="localhost"])').forEach(s => s.remove())
+    if (!this.querySelector('[slot="source"]')) {
+      this.shadowRoot.querySelector('#source code').textContent = `
+    ${Array.from(doc.querySelectorAll('script')).filter(el => el.src.includes('jsdelivr')).map(el => el.outerHTML).join('\n')}
     ${doc.querySelector('head style').outerHTML
       .replace('      @layers external, internal;\n\n', '')
       .replace('      @layers external, internal;\n', '')}
     ${doc.body.innerHTML}`
+    }
     Prism.highlightElement(this.shadowRoot.querySelector('#source code'))
     const body = this.shadowRoot.querySelector('#body')
     if (this.hasAttribute('use-iframe')) {
       const iframe = document.createElement('iframe')
-      iframe.srcdoc = html
+      iframe.srcdoc = doc.documentElement.outerHTML
       iframe.setAttribute('part', 'iframe')
       body.appendChild(iframe)
     } else {
@@ -272,9 +275,9 @@ class HotFXDemo extends HTMLElement {
       </footer>
       <div id="source">
         <div class="wrapper">
-          <pre class="language-html">
-            <code></code>
-          </pre>
+          <slot name="source">
+            <pre class="language-html"><code></code></pre>
+          </slot>
         </div>
       </div>
     `

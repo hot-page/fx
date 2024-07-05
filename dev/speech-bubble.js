@@ -1,3 +1,5 @@
+// TODO
+// - firefox: cant load comic sans, speech bubble text is not well positioned
 
 document.head.insertAdjacentHTML('beforeend', `
   <style>

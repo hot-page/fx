@@ -1,0 +1,27 @@
+{
+  "name": "@hot-page/hotfx-lightbox",
+  "version": "0.0.0",
+  "description": "A custom HTML element that shows images from the page in a full-screen lightbox modal.",
+  "main": "hotfx-lightbox.js",
+  "scripts": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hot-page/fx.git"
+  },
+  "keywords": [
+    "custom",
+    "element",
+    "web",
+    "component",
+    "html",
+    "lightbox",
+    "carousel",
+    "images"
+  ],
+  "author": "Hot Page",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hot-page/fx/issues"
+  },
+  "homepage": "https://fx.hot.page/lightbox"
+}

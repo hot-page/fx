@@ -17,7 +17,6 @@ Read more at [fx.hot.page](https://fx.hot.page/).
 
 Created for sites built on [Hot Page](hot.page).
 
-
 ## Development
 
 To modify the files and see the results on your pages, you can run a
@@ -53,6 +52,15 @@ brew install mkcert mkcert -install mkcert localhost
 
 This will generate the certificate in this directory and you should be able to
 then run the server as described above.
+
+## Publish
+
+To publish a new version to NPM, go to the directory of the package and run:
+
+```
+npm version patch
+npm publish --access public
+```
 
 ## A Hot Page Project
 
