@@ -251,7 +251,7 @@ class HotFXDemo extends HTMLElement {
       <div id="controls">
         <slot name="controls"></slot>
       </div>
-      <div id="body"></div>
+      <div id="body" part="body"></div>
       <footer>
         <div class="container">
           <button class="html">
