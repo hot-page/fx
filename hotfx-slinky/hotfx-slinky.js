@@ -1,5 +1,4 @@
-// import * as d3 from 'https://cdn.jsdelivr.net/npm/d3-interpolate@3.0.1/+esm'
-import * as d3 from 'd3-interpolate'
+import { interpolateHslLong, interpolateHsl } from 'd3-interpolate'
 
 const defaultTemplate = document.createElement('template')
 defaultTemplate.innerHTML = `
@@ -40,7 +39,6 @@ defaultTemplate.innerHTML = `
   </style>
 `
 
-
 class HotFXSlinky extends HTMLElement {
   static observedAttributes = ['n', 'color-start', 'color-end', 'interpolate-long']
 
@@ -68,15 +66,10 @@ class HotFXSlinky extends HTMLElement {
       }
       const n = parseInt(this.getAttribute('n') || 1)
       if (this.hasAttribute('color-start') && this.hasAttribute('color-end')) {
-        if (
-          this.hasAttribute('interpolate-long')
-        ) {
-        }
-        const fnName = 
-          this.hasAttribute('interpolate-long') ? 
-          'interpolateHslLong':
-          'interpolateHsl'
-        const interpolator = d3[fnName](
+        const fn = this.hasAttribute('interpolate-long')
+          ? interpolateHslLong
+          : interpolateHsl
+        const interpolator = fn(
           this.getAttribute('color-start'),
           this.getAttribute('color-end'),
         )
@@ -89,16 +82,17 @@ class HotFXSlinky extends HTMLElement {
 
   #render() {
     this.style.setProperty('--length', this.stops.length)
-    const node = Array.from(this.children).find(el => el.tagName != 'TEMPLATE')
+    const nodes = Array.from(this.children).filter(el => el.tagName != 'TEMPLATE')
     this.shadowRoot.innerHTML = ''
     this.shadowRoot.append(
-      ...this.stops.map((color, i) => {
+      ...this.stops.flatMap((color, i) => nodes.map(node => {
         const copy = node.cloneNode(true)
         if (color) copy.style.setProperty('--color', color)
         copy.setAttribute('part', 'copy')
+        copy.setAttribute('aria-hidden', 'true')
         copy.style.setProperty('--index', i)
         return copy
-      })
+      }))
     )
     const template = Array.from(this.children).find(
       el => el.tagName == 'TEMPLATE'
