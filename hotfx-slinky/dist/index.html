@@ -1,0 +1,68 @@
+<head>
+  <script type="module" crossorigin src="/assets/index-BPpuNZbW.js"></script>
+</head>
+<body>
+  <hotfx-slinky><h1>Slinky</h1></hotfx-slinky>
+
+
+    <hotfx-slinky n="100" color-end="red" color-start="orange">
+      <h1>Hot Page </h1>
+      <template>
+        <style>
+          :host {
+            display: block;
+            overflow: hidden;
+            height: 224px;
+          }
+
+          h1 {
+            display: inline;
+            color: var(--color);
+            font-family: sans-serif;
+            word-break: break-all;
+            font-size: 28px;
+            line-height: 32px;
+          }
+        </style>
+      </template>
+    </hotfx-slinky>
+    
+    <hotfx-slinky n="10" color-end="purple" color-start="blue" interpolate="interpolateHclLong">
+      <h1>Hot Page </h1>
+      <template>
+        <style>
+          :host {
+            display: block;
+            height: 300px;
+            margin: 300px;
+          }
+
+          h1 {
+            font-family: sans-serif;
+            position: absolute;
+            rotate: calc(var(--index) * -15deg);
+            color: var(--color);
+            transform-origin: left bottom;
+            z-index: calc(var(--length) - var(--index));
+          }
+
+          h1:first-child {
+            color: white;
+            -webkit-text-stroke: 1px black;
+          }
+        </style>
+      </template>
+    </hotfx-slinky>
+
+    <pre>
+Demo: positioning text in 2D
+
+Demo: horizontal movement
+
+Demo: changing the colors and interpolating between them
+
+Demo: movement on a path
+
+Demo: positioning things in 3D
+    </pre>
+</body>

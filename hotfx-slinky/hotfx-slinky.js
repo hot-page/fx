@@ -1,16 +1,5 @@
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3-interpolate@3.0.1/+esm'
-
-const interpolatorOptions = [
-  "interpolateCubehelix",
-  "interpolateCubehelixLong",
-  "interpolateHcl",
-  "interpolateHclLong",
-  "interpolateHsl",
-  "interpolateHslLong",
-  "interpolateHue",
-  "interpolateLab",
-  "interpolateRgb",
-]
+// import * as d3 from 'https://cdn.jsdelivr.net/npm/d3-interpolate@3.0.1/+esm'
+import * as d3 from 'd3-interpolate'
 
 const defaultTemplate = document.createElement('template')
 defaultTemplate.innerHTML = `
@@ -53,12 +42,21 @@ defaultTemplate.innerHTML = `
 
 
 class HotFXSlinky extends HTMLElement {
+  static observedAttributes = ['n', 'color-start', 'color-end', 'interpolate-long']
 
   constructor() {
     super()
     this.attachShadow({ mode: 'open' });
-    setTimeout(() => this.#render(), 100)
-    this.addEventListener('slotchange', () => this.#render)
+    this.#render()
+    const observer = new MutationObserver(() => this.#render())
+    observer.observe(
+      this,
+      { subtree: true, childList: true, characterData: true },
+    )
+  }
+
+  attributeChangedCallback() {
+    this.#render()
   }
 
   get stops() {
@@ -68,20 +66,19 @@ class HotFXSlinky extends HTMLElement {
       if (/\D/.test(this.getAttribute('n'))) {
         throw TypeError(`Invalid n attribute for <hotfx-slinky>: "${this.getAttribute('n')}". Expected a positive integer.`)
       }
-      const n = parseInt(this.getAttribute('n'))
-      if (this.hasAttribute('colorStart') && this.hasAttribute('colorEnd')) {
-        const interpolatorName = this.hasAttribute('interpolate')
-          ? this.getAttribute('interpolate')
-          : 'interpolateRGB'
+      const n = parseInt(this.getAttribute('n') || 1)
+      if (this.hasAttribute('color-start') && this.hasAttribute('color-end')) {
         if (
-          this.hasAttribute('interpolate') &&
-          !interpolatorOptions.includes(interpolatorName)
+          this.hasAttribute('interpolate-long')
         ) {
-          throw TypeError(`Invalid interpolate attribute for <hotfx-slinky>: "${interpolatorName}"`)
         }
-        const interpolator = d3[interpolatorName](
-          this.getAttribute('colorStart'),
-          this.getAttribute('colorEnd'),
+        const fnName = 
+          this.hasAttribute('interpolate-long') ? 
+          'interpolateHslLong':
+          'interpolateHsl'
+        const interpolator = d3[fnName](
+          this.getAttribute('color-start'),
+          this.getAttribute('color-end'),
         )
         return Array(n).fill().map((_,i) => interpolator(i/(n-1)))
       }
