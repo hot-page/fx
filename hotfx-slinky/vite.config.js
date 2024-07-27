@@ -4,6 +4,7 @@ export default {
       entry: 'hotfx-slinky.js',
       formats: ['es'],
     },
+    sourcemap: true,
     rollupOptions: {
       output: {
         entryFileNames: `[name].js`,

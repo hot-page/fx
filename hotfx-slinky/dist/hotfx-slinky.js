@@ -9,14 +9,14 @@ var y = (e, t, r) => (V(e, t, "access private method"), r);
 function E(e, t, r) {
   e.prototype = t.prototype = r, r.constructor = e;
 }
-function j(e, t) {
+function O(e, t) {
   var r = Object.create(e.prototype);
-  for (var i in t) r[i] = t[i];
+  for (var n in t) r[n] = t[n];
   return r;
 }
 function p() {
 }
-var b = 0.7, k = 1 / b, d = "\\s*([+-]?\\d+)\\s*", g = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", x = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", W = /^#([0-9a-f]{3,8})$/, X = new RegExp(`^rgb\\(${d},${d},${d}\\)$`), Z = new RegExp(`^rgb\\(${x},${x},${x}\\)$`), ee = new RegExp(`^rgba\\(${d},${d},${d},${g}\\)$`), te = new RegExp(`^rgba\\(${x},${x},${x},${g}\\)$`), re = new RegExp(`^hsl\\(${g},${x},${x}\\)$`), ie = new RegExp(`^hsla\\(${g},${x},${x},${g}\\)$`), T = {
+var b = 0.7, k = 1 / b, d = "\\s*([+-]?\\d+)\\s*", g = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)\\s*", x = "\\s*([+-]?(?:\\d*\\.)?\\d+(?:[eE][+-]?\\d+)?)%\\s*", W = /^#([0-9a-f]{3,8})$/, X = new RegExp(`^rgb\\(${d},${d},${d}\\)$`), Z = new RegExp(`^rgb\\(${x},${x},${x}\\)$`), ee = new RegExp(`^rgba\\(${d},${d},${d},${g}\\)$`), te = new RegExp(`^rgba\\(${x},${x},${x},${g}\\)$`), re = new RegExp(`^hsl\\(${g},${x},${x}\\)$`), ne = new RegExp(`^hsla\\(${g},${x},${x},${g}\\)$`), F = {
   aliceblue: 15792383,
   antiquewhite: 16444375,
   aqua: 65535,
@@ -173,46 +173,46 @@ E(p, R, {
   displayable() {
     return this.rgb().displayable();
   },
-  hex: L,
+  hex: T,
   // Deprecated! Use color.formatHex.
-  formatHex: L,
-  formatHex8: ne,
+  formatHex: T,
+  formatHex8: ie,
   formatHsl: ae,
-  formatRgb: _,
-  toString: _
+  formatRgb: L,
+  toString: L
 });
-function L() {
+function T() {
   return this.rgb().formatHex();
 }
-function ne() {
+function ie() {
   return this.rgb().formatHex8();
 }
 function ae() {
-  return z(this).formatHsl();
+  return S(this).formatHsl();
 }
-function _() {
+function L() {
   return this.rgb().formatRgb();
 }
 function R(e) {
   var t, r;
-  return e = (e + "").trim().toLowerCase(), (t = W.exec(e)) ? (r = t[1].length, t = parseInt(t[1], 16), r === 6 ? D(t) : r === 3 ? new f(t >> 8 & 15 | t >> 4 & 240, t >> 4 & 15 | t & 240, (t & 15) << 4 | t & 15, 1) : r === 8 ? w(t >> 24 & 255, t >> 16 & 255, t >> 8 & 255, (t & 255) / 255) : r === 4 ? w(t >> 12 & 15 | t >> 8 & 240, t >> 8 & 15 | t >> 4 & 240, t >> 4 & 15 | t & 240, ((t & 15) << 4 | t & 15) / 255) : null) : (t = X.exec(e)) ? new f(t[1], t[2], t[3], 1) : (t = Z.exec(e)) ? new f(t[1] * 255 / 100, t[2] * 255 / 100, t[3] * 255 / 100, 1) : (t = ee.exec(e)) ? w(t[1], t[2], t[3], t[4]) : (t = te.exec(e)) ? w(t[1] * 255 / 100, t[2] * 255 / 100, t[3] * 255 / 100, t[4]) : (t = re.exec(e)) ? S(t[1], t[2] / 100, t[3] / 100, 1) : (t = ie.exec(e)) ? S(t[1], t[2] / 100, t[3] / 100, t[4]) : T.hasOwnProperty(e) ? D(T[e]) : e === "transparent" ? new f(NaN, NaN, NaN, 0) : null;
+  return e = (e + "").trim().toLowerCase(), (t = W.exec(e)) ? (r = t[1].length, t = parseInt(t[1], 16), r === 6 ? _(t) : r === 3 ? new f(t >> 8 & 15 | t >> 4 & 240, t >> 4 & 15 | t & 240, (t & 15) << 4 | t & 15, 1) : r === 8 ? w(t >> 24 & 255, t >> 16 & 255, t >> 8 & 255, (t & 255) / 255) : r === 4 ? w(t >> 12 & 15 | t >> 8 & 240, t >> 8 & 15 | t >> 4 & 240, t >> 4 & 15 | t & 240, ((t & 15) << 4 | t & 15) / 255) : null) : (t = X.exec(e)) ? new f(t[1], t[2], t[3], 1) : (t = Z.exec(e)) ? new f(t[1] * 255 / 100, t[2] * 255 / 100, t[3] * 255 / 100, 1) : (t = ee.exec(e)) ? w(t[1], t[2], t[3], t[4]) : (t = te.exec(e)) ? w(t[1] * 255 / 100, t[2] * 255 / 100, t[3] * 255 / 100, t[4]) : (t = re.exec(e)) ? j(t[1], t[2] / 100, t[3] / 100, 1) : (t = ne.exec(e)) ? j(t[1], t[2] / 100, t[3] / 100, t[4]) : F.hasOwnProperty(e) ? _(F[e]) : e === "transparent" ? new f(NaN, NaN, NaN, 0) : null;
 }
-function D(e) {
+function _(e) {
   return new f(e >> 16 & 255, e >> 8 & 255, e & 255, 1);
 }
-function w(e, t, r, i) {
-  return i <= 0 && (e = t = r = NaN), new f(e, t, r, i);
+function w(e, t, r, n) {
+  return n <= 0 && (e = t = r = NaN), new f(e, t, r, n);
 }
 function fe(e) {
   return e instanceof p || (e = R(e)), e ? (e = e.rgb(), new f(e.r, e.g, e.b, e.opacity)) : new f();
 }
-function se(e, t, r, i) {
-  return arguments.length === 1 ? fe(e) : new f(e, t, r, i ?? 1);
+function se(e, t, r, n) {
+  return arguments.length === 1 ? fe(e) : new f(e, t, r, n ?? 1);
 }
-function f(e, t, r, i) {
-  this.r = +e, this.g = +t, this.b = +r, this.opacity = +i;
+function f(e, t, r, n) {
+  this.r = +e, this.g = +t, this.b = +r, this.opacity = +n;
 }
-E(f, se, j(p, {
+E(f, se, O(p, {
   brighter(e) {
     return e = e == null ? k : Math.pow(k, e), new f(this.r * e, this.g * e, this.b * e, this.opacity);
   },
@@ -223,29 +223,29 @@ E(f, se, j(p, {
     return this;
   },
   clamp() {
-    return new f(c(this.r), c(this.g), c(this.b), A(this.opacity));
+    return new f(c(this.r), c(this.g), c(this.b), H(this.opacity));
   },
   displayable() {
     return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
   },
-  hex: I,
+  hex: D,
   // Deprecated! Use color.formatHex.
-  formatHex: I,
+  formatHex: D,
   formatHex8: oe,
-  formatRgb: O,
-  toString: O
+  formatRgb: I,
+  toString: I
 }));
-function I() {
+function D() {
   return `#${h(this.r)}${h(this.g)}${h(this.b)}`;
 }
 function oe() {
   return `#${h(this.r)}${h(this.g)}${h(this.b)}${h((isNaN(this.opacity) ? 1 : this.opacity) * 255)}`;
 }
-function O() {
-  const e = A(this.opacity);
+function I() {
+  const e = H(this.opacity);
   return `${e === 1 ? "rgb(" : "rgba("}${c(this.r)}, ${c(this.g)}, ${c(this.b)}${e === 1 ? ")" : `, ${e})`}`;
 }
-function A(e) {
+function H(e) {
   return isNaN(e) ? 1 : Math.max(0, Math.min(1, e));
 }
 function c(e) {
@@ -254,24 +254,24 @@ function c(e) {
 function h(e) {
   return e = c(e), (e < 16 ? "0" : "") + e.toString(16);
 }
-function S(e, t, r, i) {
-  return i <= 0 ? e = t = r = NaN : r <= 0 || r >= 1 ? e = t = NaN : t <= 0 && (e = NaN), new l(e, t, r, i);
+function j(e, t, r, n) {
+  return n <= 0 ? e = t = r = NaN : r <= 0 || r >= 1 ? e = t = NaN : t <= 0 && (e = NaN), new l(e, t, r, n);
 }
-function z(e) {
+function S(e) {
   if (e instanceof l) return new l(e.h, e.s, e.l, e.opacity);
   if (e instanceof p || (e = R(e)), !e) return new l();
   if (e instanceof l) return e;
   e = e.rgb();
-  var t = e.r / 255, r = e.g / 255, i = e.b / 255, n = Math.min(t, r, i), o = Math.max(t, r, i), a = NaN, s = o - n, m = (o + n) / 2;
-  return s ? (t === o ? a = (r - i) / s + (r < i) * 6 : r === o ? a = (i - t) / s + 2 : a = (t - r) / s + 4, s /= m < 0.5 ? o + n : 2 - o - n, a *= 60) : s = m > 0 && m < 1 ? 0 : a, new l(a, s, m, e.opacity);
+  var t = e.r / 255, r = e.g / 255, n = e.b / 255, i = Math.min(t, r, n), s = Math.max(t, r, n), o = NaN, a = s - i, m = (s + i) / 2;
+  return a ? (t === s ? o = (r - n) / a + (r < n) * 6 : r === s ? o = (n - t) / a + 2 : o = (t - r) / a + 4, a /= m < 0.5 ? s + i : 2 - s - i, o *= 60) : a = m > 0 && m < 1 ? 0 : o, new l(o, a, m, e.opacity);
 }
-function M(e, t, r, i) {
-  return arguments.length === 1 ? z(e) : new l(e, t, r, i ?? 1);
+function M(e, t, r, n) {
+  return arguments.length === 1 ? S(e) : new l(e, t, r, n ?? 1);
 }
-function l(e, t, r, i) {
-  this.h = +e, this.s = +t, this.l = +r, this.opacity = +i;
+function l(e, t, r, n) {
+  this.h = +e, this.s = +t, this.l = +r, this.opacity = +n;
 }
-E(l, M, j(p, {
+E(l, M, O(p, {
   brighter(e) {
     return e = e == null ? k : Math.pow(k, e), new l(this.h, this.s, this.l * e, this.opacity);
   },
@@ -279,22 +279,22 @@ E(l, M, j(p, {
     return e = e == null ? b : Math.pow(b, e), new l(this.h, this.s, this.l * e, this.opacity);
   },
   rgb() {
-    var e = this.h % 360 + (this.h < 0) * 360, t = isNaN(e) || isNaN(this.s) ? 0 : this.s, r = this.l, i = r + (r < 0.5 ? r : 1 - r) * t, n = 2 * r - i;
+    var e = this.h % 360 + (this.h < 0) * 360, t = isNaN(e) || isNaN(this.s) ? 0 : this.s, r = this.l, n = r + (r < 0.5 ? r : 1 - r) * t, i = 2 * r - n;
     return new f(
-      H(e >= 240 ? e - 240 : e + 120, n, i),
-      H(e, n, i),
-      H(e < 120 ? e + 240 : e - 120, n, i),
+      A(e >= 240 ? e - 240 : e + 120, i, n),
+      A(e, i, n),
+      A(e < 120 ? e + 240 : e - 120, i, n),
       this.opacity
     );
   },
   clamp() {
-    return new l(B(this.h), $(this.s), $(this.l), A(this.opacity));
+    return new l(B(this.h), $(this.s), $(this.l), H(this.opacity));
   },
   displayable() {
     return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
   },
   formatHsl() {
-    const e = A(this.opacity);
+    const e = H(this.opacity);
     return `${e === 1 ? "hsl(" : "hsla("}${B(this.h)}, ${$(this.s) * 100}%, ${$(this.l) * 100}%${e === 1 ? ")" : `, ${e})`}`;
   }
 }));
@@ -304,62 +304,66 @@ function B(e) {
 function $(e) {
   return Math.max(0, Math.min(1, e || 0));
 }
-function H(e, t, r) {
+function A(e, t, r) {
   return (e < 60 ? t + (r - t) * e / 60 : e < 180 ? r : e < 240 ? t + (r - t) * (240 - e) / 60 : t) * 255;
 }
-const F = (e) => () => e;
-function J(e, t) {
+const z = (e) => () => e;
+function Y(e, t) {
   return function(r) {
     return e + r * t;
   };
 }
 function le(e, t) {
   var r = t - e;
-  return r ? J(e, r > 180 || r < -180 ? r - 360 * Math.round(r / 360) : r) : F(isNaN(e) ? t : e);
+  return r ? Y(e, r > 180 || r < -180 ? r - 360 * Math.round(r / 360) : r) : z(isNaN(e) ? t : e);
 }
 function v(e, t) {
   var r = t - e;
-  return r ? J(e, r) : F(isNaN(e) ? t : e);
+  return r ? Y(e, r) : z(isNaN(e) ? t : e);
 }
-function Y(e) {
+function G(e) {
   return function(t, r) {
-    var i = e((t = M(t)).h, (r = M(r)).h), n = v(t.s, r.s), o = v(t.l, r.l), a = v(t.opacity, r.opacity);
-    return function(s) {
-      return t.h = i(s), t.s = n(s), t.l = o(s), t.opacity = a(s), t + "";
+    var n = e((t = M(t)).h, (r = M(r)).h), i = v(t.s, r.s), s = v(t.l, r.l), o = v(t.opacity, r.opacity);
+    return function(a) {
+      return t.h = n(a), t.s = i(a), t.l = s(a), t.opacity = o(a), t + "";
     };
   };
 }
-const xe = Y(le);
-var he = Y(v);
-const G = document.createElement("template");
-G.innerHTML = `
+const xe = G(le);
+var he = G(v);
+const J = document.createElement("template");
+J.innerHTML = [
+  `
   <style>
     :host {
       position: relative;
     }
 
-    :first-child {
+    :first-of-type {
       position: relative;
-    }
-
-    * {
+    }`,
+  // Each element is positioned absolutely to take it out of the document's
+  // flow, meaning that the browser doesn't create space for it on the page.A
+  // Then we apply colors, a text-stroke and a slight shadow. Each is slightly
+  // offset to the right by positioning the left edge a few pixels over.
+  `* {
       position: absolute;
       top: 0;
       margin: 0;
       color: var(--color);
-      z-index: calc(var(--length) - var(--index));
-      left: calc(var(--index) * var(--horizontal-offset, 1px));
       -webkit-text-stroke: 1px black;
       text-shadow: 4px 4px 3px rgba(0, 0, 0, .2);
+      left: calc(var(--index) * var(--horizontal-offset, 1px));
+      z-index: calc(var(--length) - var(--index));
       animation:
         bounce
         var(--speed, 1.5s)
         calc(var(--index) * var(--delay, 50ms))
         ease-in-out
         infinite;
-    }
-
-    @keyframes bounce {
+    }`,
+  // These keyframes have the element bounce up and down
+  `@keyframes bounce {
       0%, 100% {
         transform: none;
       }
@@ -368,7 +372,8 @@ G.innerHTML = `
       }
     }
   </style>
-`;
+`
+].join("");
 var u, N;
 class K extends HTMLElement {
   constructor() {
@@ -379,41 +384,44 @@ class K extends HTMLElement {
       { subtree: !0, childList: !0, characterData: !0 }
     );
   }
+  // Re-render the when any of the observed attributes are changed.
   attributeChangedCallback() {
     y(this, u, N).call(this);
   }
+  // The `.stops` property is an array of color strings. It is calculated by
+  // using the `length` attribute and a 
   get stops() {
-    if (this.hasAttribute("colors"))
-      return JSON.parse(this.getAttribute("colors"));
-    if (this.hasAttribute("n")) {
-      if (/\D/.test(this.getAttribute("n")))
-        throw TypeError(`Invalid n attribute for <hotfx-slinky>: "${this.getAttribute("n")}". Expected a positive integer.`);
-      const r = parseInt(this.getAttribute("n") || 1);
+    if (this.hasAttribute("length")) {
+      if (/\D/.test(this.getAttribute("length")))
+        throw TypeError(`Invalid length attribute for <hotfx-slinky>: "${this.getAttribute("length")}". Expected a positive integer.`);
+      const r = parseInt(this.getAttribute("length") || 7);
       if (this.hasAttribute("color-start") && this.hasAttribute("color-end")) {
-        this.hasAttribute("interpolate-long");
-        const n = (this.hasAttribute("interpolate-long") ? he : xe)(
+        const i = (this.hasAttribute("rainbow") ? he : xe)(
           this.getAttribute("color-start"),
           this.getAttribute("color-end")
         );
-        return Array(r).fill().map((o, a) => n(a / (r - 1)));
+        return Array(r).fill().map((s, o) => i(o / (r - 1)));
       }
       return Array(r).fill();
     }
-    return ["white", "#D49C3D", "#D14B3D", "#CF52EB", "#44A3F7", "#5ACB3C", "#DEBF40"];
+    return ["#FFFFFF", "#D49C3D", "#D14B3D", "#CF52EB", "#44A3F7", "#5ACB3C", "#DEBF40"];
   }
 }
 u = new WeakSet(), N = function() {
   this.style.setProperty("--length", this.stops.length);
-  const r = Array.from(this.children).find((n) => n.tagName != "TEMPLATE");
+  const r = Array.from(this.children).filter((i) => i.tagName != "TEMPLATE");
   this.shadowRoot.innerHTML = "", this.shadowRoot.append(
-    ...this.stops.map((n, o) => {
-      const a = r.cloneNode(!0);
-      return n && a.style.setProperty("--color", n), a.setAttribute("part", "copy"), a.style.setProperty("--index", o), a;
-    })
+    ...this.stops.flatMap((i, s) => r.map((o) => {
+      const a = o.cloneNode(!0);
+      return i && a.style.setProperty("--color", i), a.setAttribute("part", "copy"), s > 0 && a.setAttribute("aria-hidden", "true"), a.style.setProperty("--index", s), a;
+    }))
   );
-  const i = Array.from(this.children).find(
-    (n) => n.tagName == "TEMPLATE"
-  ) || G;
-  this.shadowRoot.appendChild(i.content.cloneNode(!0));
-}, P(K, "observedAttributes", ["n", "color-start", "color-end", "interpolate-long"]);
+  const n = Array.from(this.children).find(
+    (i) => i.tagName == "TEMPLATE"
+  ) || (this.hasAttribute("no-style") ? document.createElement("template") : J);
+  this.shadowRoot.appendChild(n.content.cloneNode(!0));
+}, // Changes to the attributes listed in `observedAttributes` trigger a callback
+// and allow us to re-render the element's shadow DOM.
+P(K, "observedAttributes", ["length", "color-start", "color-end", "rainbow"]);
 customElements.define("hotfx-slinky", K);
+//# sourceMappingURL=hotfx-slinky.js.map

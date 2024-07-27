@@ -101,9 +101,9 @@ class HotFXJSDocs extends HTMLElement {
           // // remove soft hyphens
           // .replace(/\u00ad/g, '')
           // en-dashes to em-dash. sad that this is necessary but it is.
-          .replace('\u2013', '\u2014')
-          // em-dashes
-          .replace(/--/g, '\u2014')
+          // .replace('\u2013', '\u2014')
+          // em-dashes (disabled because css custom props are needed)
+          // .replace(/--/g, '\u2014')
           .replace(/(\s|$)HTML([\s.])/g, '$1<abbr>HTML</abbr>$2')
           .replace(/(\s|$)CSS([\s.])/g, '$1<abbr>CSS</abbr>$2')
           .replace(/(\s|$)DOM([\s.])/g, '$1<abbr>DOM</abbr>$2')

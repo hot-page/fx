@@ -105,7 +105,7 @@ class HotFXDemo extends HTMLElement {
 
         #body {
           background-color: white;
-          overflow: auto;
+          overflow: hidden;
         }
 
         #body iframe {
