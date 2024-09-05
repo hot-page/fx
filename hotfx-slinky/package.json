@@ -2,7 +2,7 @@
   "name": "@hot-page/hotfx-slinky",
   "version": "0.0.0",
   "description": "Duplicate DOM elements for unlimited text effects",
-  "main": "hotfx-slinky.js",
+  "main": "dist/hotfx-slinky.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

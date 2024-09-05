@@ -1,0 +1,24 @@
+{
+  "name": "@hot-page/hotfx-shy-header",
+  "version": "0.0.0",
+  "description": "A custom HTML element for a header that hides itself while a user is scrolling down and shows itself again when they start scrolling up.",
+  "main": "hotfx-shy-header.js",
+  "scripts": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hot-page/fx.git"
+  },
+  "keywords": [
+    "custom",
+    "element",
+    "web",
+    "component",
+    "html"
+  ],
+  "author": "Hot Page",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hot-page/fx/issues"
+  },
+  "homepage": "https://fx.hot.page/shy-header"
+}

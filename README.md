@@ -64,8 +64,8 @@ npm publish --access public
 
 ## A Hot Page Project
 
-This open-source project is built by the engineeers at [Hot Page](https://hot.page), a tool for web
-design and development.
+This open-source project is built by the engineeers at [Hot Page](https://hot.page),
+a tool for web design and development.
 
 &nbsp;
 

@@ -1,5 +1,6 @@
-// We use the D3 color interpolation functions for transitioning between two
-// colors.
+// We use the
+// [D3 color interpolation](https://d3js.org/d3-interpolate/color)
+// functions for transitioning between two colors.
 import { interpolateHslLong, interpolateHsl } from 'd3-interpolate'
 
 // This are the default styles that are similar to the original
