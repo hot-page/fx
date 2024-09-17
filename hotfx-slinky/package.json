@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/hot-page/fx/issues"
   },
-  "homepage": "https://github.com/hot-page/fx#readme",
+  "homepage": "https://fx.hot.page/slinky",
   "dependencies": {
     "d3-interpolate": "^3.0.1",
     "vite": "^5.3.4"
