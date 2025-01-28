@@ -136,7 +136,7 @@ class HotFXLightbox extends HTMLElement {
       ?.scrollIntoView()
   }
 
-  // `preivous()` shows the previous image in the lightbox.
+  // `previous()` shows the previous image in the lightbox.
   previous() {
     // Here we loop through the slides backwards, i.e. from right to left. We
     // are looking for the first one that is offscreen to the left, i.e. has
