@@ -14,17 +14,19 @@ class HotFXDemo extends HTMLElement {
   }
 
   async #fetch() {
-    const response = await fetch(this.getAttribute('src'))
-    const html = await response.text()
+    const cssResponse = await fetch(this.getAttribute('src') + '.css')
+    const css = await cssResponse.text()
+    const htmlResponse = await fetch(this.getAttribute('src') + '?theRealThingAndNotSomeClientRenderedBS')
+    const html = await htmlResponse.text()
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, "text/html")
     doc.querySelectorAll('script:not([src*="jsdelivr"]):not([src*="localhost"])').forEach(s => s.remove())
     if (!this.querySelector('[slot="source"]')) {
       this.shadowRoot.querySelector('#source code').textContent = `
     ${Array.from(doc.querySelectorAll('script')).filter(el => el.src.includes('jsdelivr')).map(el => el.outerHTML).join('\n')}
-    ${doc.querySelector('head style').outerHTML
-      .replace('      @layers external, internal;\n\n', '')
-      .replace('      @layers external, internal;\n', '')}
+    <style>
+${css.split('\n').map(line =>  `      ${line}`).join('\n')}
+    </style>
     ${doc.body.innerHTML}`
     }
     Prism.highlightElement(this.shadowRoot.querySelector('#source code'))

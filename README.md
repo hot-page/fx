@@ -47,7 +47,9 @@ more](https://web.dev/articles/how-to-use-local-https) on web.dev). For
 example, on MacOS use the following
 
 ```
-brew install mkcert mkcert -install mkcert localhost
+brew install mkcert
+mkcert -install
+mkcert localhost
 ```
 
 This will generate the certificate in this directory and you should be able to
