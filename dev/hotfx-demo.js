@@ -21,10 +21,13 @@ class HotFXDemo extends HTMLElement {
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, "text/html")
     doc.querySelectorAll('script:not([src*="jsdelivr"]):not([src*="localhost"])').forEach(s => s.remove())
+    console.log('found imports', Array.from(doc.querySelectorAll('head style')).map(el => el.innerHTML))
+    const moreImports = Array.from(doc.querySelectorAll('head style')).map(el => el.innerHTML.split('\n').filter(l => !l.trim().startsWith(`@import url('/`)).join('\n')).join('\n')
+    console.log('moreImports', moreImports)
     if (!this.querySelector('[slot="source"]')) {
       this.shadowRoot.querySelector('#source code').textContent = `
     ${Array.from(doc.querySelectorAll('script')).filter(el => el.src.includes('jsdelivr')).map(el => el.outerHTML).join('\n')}
-    <style>
+    <style>${moreImports.trim() ? moreImports : ''}
 ${css.split('\n').map(line =>  `      ${line}`).join('\n')}
     </style>
     ${doc.body.innerHTML}`
