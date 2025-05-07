@@ -7,8 +7,10 @@ class HotFXGyroscope extends HTMLElement {
   }
 
   #onDeviceOrientation = (event) => {
-    if (!this.#start) {
-      const { alpha, beta, gamma } = event
+    const { alpha, beta, gamma } = event
+    if (alpha === null || beta === null || gamma === null) {
+      return 
+    } else if (!this.#start) {
       this.#start = { alpha, beta, gamma }
       this.setAttribute('working', '')
     }
