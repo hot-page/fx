@@ -35,16 +35,21 @@ class HotFXCopyButton extends HTMLElement {
   #render() {
     this.shadowRoot.innerHTML = `
       <style>
+        :host {
+          white-space: normal;
+          display: inline-block;
+          padding: 0.3em;
+          vertical-align: middle;
+        }
+
         button {
-          background: none;
-          border: none;
-          color: inherit;
+          all: initial;
           cursor: pointer;
         }
 
         svg {
-          width: 1.5em;
-          height: 1.5em;
+          width: 1.3em;
+          height: 1.3em;
           line-height: 1;
         }
 

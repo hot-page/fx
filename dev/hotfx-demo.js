@@ -21,16 +21,30 @@ class HotFXDemo extends HTMLElement {
     const parser = new DOMParser()
     const doc = parser.parseFromString(html, "text/html")
     doc.querySelectorAll('script:not([src*="jsdelivr"]):not([src*="localhost"])').forEach(s => s.remove())
-    console.log('found imports', Array.from(doc.querySelectorAll('head style')).map(el => el.innerHTML))
-    const moreImports = Array.from(doc.querySelectorAll('head style')).map(el => el.innerHTML.split('\n').filter(l => !l.trim().startsWith(`@import url('/`)).join('\n')).join('\n')
-    console.log('moreImports', moreImports)
+    const imports = doc.querySelector('head style').innerHTML
+        .split('\n')
+        .map(line =>  line.trim())
+        .filter(line => line && !line.startsWith(`@import url('${this.getAttribute('src')}`))
+        .map(line =>  `  ${line.replace(/\?cache-key=[^']*'/, "'").trim()}`)
+        .join('\n')
     if (!this.querySelector('[slot="source"]')) {
-      this.shadowRoot.querySelector('#source code').textContent = `
-    ${Array.from(doc.querySelectorAll('script')).filter(el => el.src.includes('jsdelivr')).map(el => el.outerHTML).join('\n')}
-    <style>${moreImports.trim() ? moreImports : ''}
-${css.split('\n').map(line =>  `      ${line}`).join('\n')}
-    </style>
-    ${doc.body.innerHTML}`
+      const scripts = Array.from(doc.querySelectorAll('script'))
+          .map(el => el.outerHTML)
+      this.shadowRoot.querySelector('#source code').textContent += scripts.join('\n\n')
+      this.shadowRoot.querySelector('#source code').textContent += scripts.length ? '\n' : ''
+      let style = '<style>\n'
+      style += imports
+      style += imports.length && css.length ? '\n\n' : ''
+      style += css.split('\n').map(line =>  `  ${line}`).join('\n')
+      style += '\n</style>\n'
+      this.shadowRoot.querySelector('#source code').textContent += style
+      const body = doc
+        .body
+        .innerHTML
+        .split('\n')
+        .map(line => line.startsWith('    ') ? line.slice(4) : line)
+        .join('\n')
+      this.shadowRoot.querySelector('#source code').textContent += body
     }
     Prism.highlightElement(this.shadowRoot.querySelector('#source code'))
     const body = this.shadowRoot.querySelector('#body')
@@ -141,6 +155,7 @@ ${css.split('\n').map(line =>  `      ${line}`).join('\n')}
           display: block;
           overflow: hidden;
           padding: 0;
+          font-size: 16px;
         }
 
         #source pre,
@@ -270,7 +285,7 @@ ${css.split('\n').map(line =>  `      ${line}`).join('\n')}
             </button>
             <a
               class="button"
-              href="https://hotpage.dev/new?template=fx${this.getAttribute('src')}"
+              href="https://hotpage.dev/fx${this.getAttribute('src')}"
               target="_blank">
               ${burnout}
               Use on Hot Page
