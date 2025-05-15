@@ -37,6 +37,10 @@ class HotFXNPMPermalink extends HTMLElement {
     this.#link = `https://cdn.jsdelivr.net/npm/${pkg}@${data.version}${file}`
     this.shadowRoot.innerHTML = `
       <style>
+        :host {
+          overflow-wrap: break-word;
+        }
+
         #link {
           word-break: break-word;
         }

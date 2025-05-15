@@ -11,11 +11,11 @@
 HotFX is a collection of standalone custom elements and frontend code snippets
 that are like wowwwwwww
 
-Read more at [fx.hot.page](https://fx.hot.page/).
+See the components at [fx.hot.page](https://fx.hot.page/) or read about the 
+rationale in our [announcement blog post](https://hot.page/takes/year-of-web-components).
 
-[A Year of Web Components](https://hot.page/takes/year-of-web-components)
-
-Created for sites built on [Hot Page](hot.page).
+These components were created for sites on [Hot Page](hot.page) but they work
+anywhere!
 
 ## Development
 

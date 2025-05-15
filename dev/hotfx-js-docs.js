@@ -107,6 +107,9 @@ class HotFXJSDocs extends HTMLElement {
           .replace(/(\s|$)HTML([\s.])/g, '$1<abbr>HTML</abbr>$2')
           .replace(/(\s|$)CSS([\s.])/g, '$1<abbr>CSS</abbr>$2')
           .replace(/(\s|$)DOM([\s.])/g, '$1<abbr>DOM</abbr>$2')
+          .replace(/(\s|$)URL([\s.])/g, '$1<abbr>URL</abbr>$2')
+          .replace(/(\s|$)GET([\s.])/g, '$1<small>GET</small>$2')
+          .replace(/(\s|$)POST([\s.])/g, '$1<small>POST</small>$2')
         return `
           <div class="hotfx-js-docs-row" id="section-${i/2}">
             <div class="comment-section">
@@ -138,7 +141,7 @@ class HotFXJSDocs extends HTMLElement {
     this.innerHTML = html
 
     // Now highlight the code in comments using Prism
-    Array.from(this.querySelectorAll('.hotfx-js-docs-row .comment-section code'))
+    Array.from(this.querySelectorAll('.hotfx-js-docs-row .comment-section code[class*="language-"]'))
       .forEach(el => Prism.highlightElement(el))
   }
 }
