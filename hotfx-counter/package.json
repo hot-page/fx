@@ -1,0 +1,21 @@
+{
+  "name": "hotfx-counter",
+  "version": "1.0.0",
+  "description": "A custom HTML element that animates counting up to a target number when scrolled into view",
+  "main": "hotfx-counter.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "counter",
+    "counting animation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "files": [
+    "hotfx-counter.js"
+  ]
+}
