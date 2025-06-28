@@ -38,9 +38,9 @@ class HotFXDemo extends HTMLElement {
       style += css.split('\n').map(line =>  `  ${line}`).join('\n')
       style += '\n</style>\n'
       this.shadowRoot.querySelector('#source code').textContent += style
-      const body = doc
-        .body
-        .innerHTML
+      const start = html.indexOf('<body>') + 6
+      const end = html.indexOf('</body>')
+      const body = html.slice(start, end)
         .split('\n')
         .map(line => line.startsWith('    ') ? line.slice(4) : line)
         .join('\n')

@@ -15,7 +15,7 @@ export class HotFXForm extends HTMLElement {
     // capturing phase.
     this.addEventListener(('invalid'), this.#onInvalid, { capture: true })
     // ElementInternals must be enabled manually.
-    this.#internals = this.attachInternals();
+    this.#internals = this.attachInternals()
   }
 
   // The `submit` event is fired when the user clicks the button to submit the
@@ -87,10 +87,10 @@ export class HotFXForm extends HTMLElement {
       if (response.ok) {
         // This adds the `success` state, which can be used in CSS to show a
         // success message to the user.
-        this.#internals.states.add('success');
+        this.#internals.states.add('success')
       // Otherwise, add the `failure` state.
       } else {
-        this.#internals.states.add('failure');
+        this.#internals.states.add('failure')
         // Also log the error to the console for developers who might be
         // looking there.
         console.error(
@@ -102,13 +102,13 @@ export class HotFXForm extends HTMLElement {
       // We add the error message to the same CSS variable as if it was the
       // response, so it can be shown on the form and the user knows what's up.
       this.style.setProperty('--hotfx-form-response', `"Couldn’t reach server: ${error.toString()}"`)
-      this.#internals.states.add('failure');
+      this.#internals.states.add('failure')
       console.error('HotFX Form error:', error)
     } finally {
       // The `finally` block runs whether there was an error or not and we use
       // it here to clean up the form to be ready for the next submission,
       // removing the loading state and re-enabling the submit button.
-      this.#internals.states.delete('loading');
+      this.#internals.states.delete('loading')
       event.submitter.disabled = false
     }
   }
