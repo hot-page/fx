@@ -22,20 +22,20 @@ class HotFXDemo extends HTMLElement {
     const doc = parser.parseFromString(html, "text/html")
     doc.querySelectorAll('script:not([src*="jsdelivr"]):not([src*="localhost"])').forEach(s => s.remove())
     const imports = doc.querySelector('head style').innerHTML
-        .split('\n')
-        .map(line =>  line.trim())
-        .map(line =>  `  ${line.replace(/\?cache-key=[^']*'/, "'").trim()}`)
-        .join('\n')
-    console.log('--->', imports)
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line && !line.startsWith(`@import url('${this.getAttribute('src')}`))
+      .map(line => `  ${line.replace(/\?cache-key=[^']*'/, "'").trim()}`)
+      .join('\n')
     if (!this.querySelector('[slot="source"]')) {
       const scripts = Array.from(doc.querySelectorAll('script'))
-          .map(el => el.outerHTML)
+        .map(el => el.outerHTML)
       this.shadowRoot.querySelector('#source code').textContent += scripts.join('\n\n')
       this.shadowRoot.querySelector('#source code').textContent += scripts.length ? '\n' : ''
       let style = '<style>\n'
       style += imports
       style += imports.length && css.length ? '\n\n' : ''
-      style += css.split('\n').map(line =>  `  ${line}`).join('\n')
+      style += css.split('\n').map(line => `  ${line}`).join('\n')
       style += '\n</style>\n'
       this.shadowRoot.querySelector('#source code').textContent += style
       const start = html.indexOf('<body>') + 6
@@ -61,7 +61,7 @@ class HotFXDemo extends HTMLElement {
       body.attachShadow({ mode: 'open' })
       // Firefox does not like style sheet @imports without the origin
       body.shadowRoot.innerHTML = `
-        ${doc.querySelector('head style').outerHTML.replaceAll("url('/","url('https://fx.hot.page/")}
+        ${doc.querySelector('head style').outerHTML.replaceAll("url('/", "url('https://fx.hot.page/")}
         ${doc.body.innerHTML}
       `
     }
