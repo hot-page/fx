@@ -24,9 +24,9 @@ class HotFXDemo extends HTMLElement {
     const imports = doc.querySelector('head style').innerHTML
         .split('\n')
         .map(line =>  line.trim())
-        .filter(line => line && !line.startsWith(`@import url('${this.getAttribute('src')}`))
         .map(line =>  `  ${line.replace(/\?cache-key=[^']*'/, "'").trim()}`)
         .join('\n')
+    console.log('--->', imports)
     if (!this.querySelector('[slot="source"]')) {
       const scripts = Array.from(doc.querySelectorAll('script'))
           .map(el => el.outerHTML)
@@ -50,13 +50,18 @@ class HotFXDemo extends HTMLElement {
     const body = this.shadowRoot.querySelector('#body')
     if (this.hasAttribute('use-iframe')) {
       const iframe = document.createElement('iframe')
-      iframe.srcdoc = doc.documentElement.outerHTML
+      // Firefox does not like style sheet @imports without the origin
+      iframe.srcdoc = doc.documentElement.outerHTML.replaceAll(
+        "@import url('/",
+        "@import url('https://fx.hot.page/",
+      )
       iframe.setAttribute('part', 'iframe')
       body.appendChild(iframe)
     } else {
       body.attachShadow({ mode: 'open' })
+      // Firefox does not like style sheet @imports without the origin
       body.shadowRoot.innerHTML = `
-        ${doc.querySelector('head style').outerHTML}
+        ${doc.querySelector('head style').outerHTML.replaceAll("url('/","url('https://fx.hot.page/")}
         ${doc.body.innerHTML}
       `
     }

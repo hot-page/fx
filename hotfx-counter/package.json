@@ -1,6 +1,6 @@
 {
-  "name": "hotfx-counter",
-  "version": "1.0.0",
+  "name": "@hot-page/hotfx-counter",
+  "version": "0.0.0",
   "description": "A custom HTML element that animates counting up to a target number when scrolled into view",
   "main": "hotfx-counter.js",
   "type": "module",
