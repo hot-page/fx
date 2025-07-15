@@ -1,9 +1,5 @@
-/* Prism is a great tiny client-side syntax highlighter. It's a bit dated now
- * and a long-awaited version 2 with ESM import support appears to be stalled
- * out. */
-import 'https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js'
-// [Marked](https://github.com/markedjs/marked) is a great markdown library
-import { marked } from 'https://cdn.jsdelivr.net/npm/marked@12.0.2/lib/marked.esm.min.js'
+import 'prism'
+import { marked } from 'marked'
 
 let linkIcon = ''
 
@@ -32,20 +28,11 @@ class HotFXJSDocs extends HTMLElement {
     this.#render()
   }
 
-  // This is where the magic happens. We download the stuff and boooom
-  // Second line
   async #render() {
-    // We fetch the JavaScript source as text. This will require CORS headers
-    // but your CDN should provide them
     const response = await fetch(this.getAttribute('src'))
     const code = await response.text()
 
-    // We use Prism to parse the file
     const tokens = Prism.tokenize(code, Prism.languages.javascript)
-    // Separate tokens into blocks of comments and code we turn these into and
-    // section objects with `type: 'section'` or `type: 'code'`
-    //
-    // This is another paragraph
     const sections = tokens.reduce((sections, token, i) => {
       let section = sections[sections.length - 1]
       const nextToken = tokens[i + 1]

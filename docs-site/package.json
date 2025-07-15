@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "scripts": {
+    "start": "vite --host",
+    "build": "vite build",
+    "deploy": "npm run build && aws s3 cp ./dist/hotfx-docs.js s3://hot-page/ --cache-control=\"max-age=0\" --acl public-read && aws s3 cp ./dist/hotfx-docs.js.map s3://hot-page/ --cache-control=\"max-age=0\" --acl public-read"
+  },
+  "dependencies": {
+    "marked": "^16.0.0",
+    "prism": "^4.1.2",
+    "vite": "^6.2.5"
+  }
+}
