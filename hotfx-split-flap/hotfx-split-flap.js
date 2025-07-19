@@ -217,6 +217,9 @@ export class HotFXSplitFlap extends HTMLElement {
 
   // Render the grid of letters into the shadow DOM.
   #render() {
+    // First set `#currentGrid` to null because it will be used to calculate the 
+    // width and height of the next grid and we need to start fresh.
+    this.#currentGrid = null
     // The `#currentGrid` is the current state of the letters displayed. Since
     // we're starting over fresh here, we just make it all space characters.
     this.#currentGrid = Array.from({ length: this.height }, () =>
