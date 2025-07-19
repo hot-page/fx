@@ -1,0 +1,17 @@
+{
+  "name": "@hot-page/hotfx-split-flap",
+  "version": "0.0.0",
+  "description": "A custom HTML element that animates a string like split-flap board from a train station.",
+  "main": "hotfx-split-flap.js",
+  "type": "module",
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "split flap"
+  ],
+  "author": "Hot Page <info@hot.page>",
+  "license": "MIT",
+  "files": [
+    "hotfx-split-flap.js"
+  ]
+}

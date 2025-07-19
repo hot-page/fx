@@ -1,4 +1,4 @@
-class HotFXNPMPermalink extends HTMLElement {
+class NPMPermalink extends HTMLElement {
   #link
 
   constructor() {
@@ -78,4 +78,4 @@ class HotFXNPMPermalink extends HTMLElement {
   }
 }
 
-customElements.define('hotfx-npm-permalink', HotFXNPMPermalink)
+customElements.define('npm-permalink', NPMPermalink)
