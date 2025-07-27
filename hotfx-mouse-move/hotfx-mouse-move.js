@@ -6,8 +6,9 @@ class HotFXMouseMove extends HTMLElement {
   }
 
   #handleMouseMove(event) {
-    this.style.setProperty('--x', event.clientX + 'px')
-    this.style.setProperty('--y', event.clientY + 'px')
+    const rect = this.getBoundingClientRect()
+    this.style.setProperty('--hotfx-mouse-x', (event.clientX - rect.left) / rect.width)
+    this.style.setProperty('--hotfx-mouse-y', (event.clientY - rect.top) / rect.height)
   }
 }
 

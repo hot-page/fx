@@ -79,7 +79,7 @@ export class HotFXSplitFlap extends HTMLElement {
       // when the new animations start.
       await Promise.all(
         Array.from(this.shadowRoot.querySelectorAll('.char'))
-          .map(char => char.getAnimations())
+          .map(char => char.getAnimations({ subtree: true }))
           .flat()
           .map(animation => animation.finish())
       )
@@ -406,7 +406,7 @@ export class HotFXSplitFlap extends HTMLElement {
         char.querySelector('.top-next').childNodes[0].textContent = nextChar
         char.querySelector('.bottom-next').childNodes[0].textContent = nextChar
 
-        // Anaimte the top flap and the bottom of the next flap to fall from the
+        // Animate the top flap and the bottom of the next flap to fall from the
         // top. Using `await Promise.all()` to wait for both animations to
         // finish.
         const options = { duration: this.duration, easing: 'ease-in' }
