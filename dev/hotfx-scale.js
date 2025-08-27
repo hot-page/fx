@@ -2,6 +2,9 @@ const styleSheet = new CSSStyleSheet()
 styleSheet.replaceSync(`
   :host {
     display: block;
+    width: calc(100% / var(--hotfx-scale, 1));
+    min-width: 0;
+    transform: scale(var(--hotfx-scale, 1));
     transform-origin: top left;
   }
 `)
@@ -15,8 +18,6 @@ class HotFXScale extends HTMLElement {
     this.shadowRoot.innerHTML = `<slot></slot>`
     this.shadowRoot.querySelector('slot').addEventListener('slotchange', this.#onSlotChange)
     this.#onSlotChange()
-    this.style.transform = 'scale(var(--hotfx-scale, 1))'
-    this.style.width = 'calc(100% / var(--hotfx-scale, 1))'
   }
 
   disconntedCallback() {

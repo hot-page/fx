@@ -47,8 +47,12 @@ class HotFXIntersectionObserver extends HTMLElement {
     this.#observer?.disconnect()
     this.#observer = new IntersectionObserver(
       (entries) => {
-        if (!entries[0].isIntersecting) return
-        this.#internals.states.add('intersecting')
+        if (entries[0].isIntersecting) {
+          this.#internals.states.add('is-intersecting')
+          this.#internals.states.add('has-intersected')
+        } else {
+          this.#internals.states.delete('is-intersecting')
+        }
       },
       { threshold: this.threshold },
     )
