@@ -1,4 +1,4 @@
-const thresholdRegex = /^(0(\.\d+)?|1(\.0*)?|\.?\d+)$/.test
+const thresholdRegex = /^(0(\.\d+)?|1(\.0*)?|\.?\d+)$/
 
 const printThresholdError = (value) => console.error(
   `<hotfx-intersection-observer> threshold must be a number between 0 and 1, received "${value}".`
