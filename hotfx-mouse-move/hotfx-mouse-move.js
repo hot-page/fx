@@ -11,8 +11,8 @@ class HotFXMouseMove extends HTMLElement {
     super()
     window.addEventListener('mousemove', this.#handleMouseMove)
     window.addEventListener('wheel', this.#handleMouseMove)
-    this.style.setProperty('--hotfx-mouse-x', 0)
-    this.style.setProperty('--hotfx-mouse-y', 0)
+    this.style.setProperty('--hotfx-mouse-x', 0.0)
+    this.style.setProperty('--hotfx-mouse-y', 0.0)
   }
 
   connectedCallback() {
