@@ -23,7 +23,7 @@ export class HotFXForm extends HTMLElement {
   // fire if the form has passed validation, so we can assume the data is ready
   // to go.
   async #onSubmit(event) {
-    // The default action of the form is to load a new page, so we always need
+    // The default behavior of the form is to load a new page, so we always need
     // to call `preventDefault` on the `submit` event to make sure that doesn't
     // happen.
     event.preventDefault()
@@ -32,7 +32,7 @@ export class HotFXForm extends HTMLElement {
     // We require the `action=` attribute to be set on the form or we won't know
     // where to submit the data. This is an URL for the server that accepts your
     // data, such as a Zapier webhook.
-    if (!form.action) {
+    if (!this.action) {
       console.error('HotFX Form Error: missing the `action="https://...."` attribute on your <form>')
       return
     }
@@ -60,19 +60,19 @@ export class HotFXForm extends HTMLElement {
       // A GET request adds the data as query parameters to the URL. So, for
       // example, it will create an URL like  `https://example.site/webhook?name=Foo&message=Bar`
       // with the form data added in the query string after `?`.
-      if (form.method == 'get') {
-        response = await fetch(`${form.action}?${new URLSearchParams(data)}`)
+      if (this.method == 'get') {
+        response = await fetch(`${this.action}?${new URLSearchParams(data)}`)
       // A form created like `<form enctype="multipart/form-data" ...>` is 
       // typically used for file uploads. It specifies a different way of
       // encoding the data that works for binary data like images.
       } else if (form.enctype == 'multipart/form-data') {
-        response = await fetch(form.action, { method: 'POST', body: data })
+        response = await fetch(this.action, { method: 'POST', body: data })
       // The default for most forms sends the data as the body of a POST request
       // with the `content-type: application/x-www-form-urlencoded` header. The
       // body is an URL-encoded string like `name=Foo&message=Bar`, much the
       // same as the data encoded at the end of the URL in a GET request.
       } else {
-        response = await fetch(form.action, {
+        response = await fetch(this.action, {
           method: 'POST',
           body: new URLSearchParams(data),
         })
@@ -140,6 +140,14 @@ export class HotFXForm extends HTMLElement {
     this.style.removeProperty('--hotfx-form-response')
     this.#internals.states.delete('success')
     this.#internals.states.delete('failure')
+  }
+
+  get method() {
+    return this.getAttribute('method') || 'get'
+  }
+
+  get action() {
+    return this.getAttribute('action')
   }
 }
 
