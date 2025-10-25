@@ -4,7 +4,10 @@ import { Signal } from 'https://esm.sh/signal-polyfill'
 // This was inspired by Ginger's post on Piccalilli:
 // https://piccalil.li/blog/functional-custom-elements-the-easy-way/
 
-export default function define(fn) {
+export const lightElement = (fn) => define(fn, { useShadow: false })
+export const shadowElement = (fn) => define(fn)
+
+export function define(fn, { useShadow = true } = {}) {
   const elementName = fn.name.replaceAll(/(.)([A-Z])/g, '$1-$2').toLowerCase()
 
   if (!elementName.includes('-')) {
@@ -18,7 +21,7 @@ export default function define(fn) {
   customElements.define(elementName, class extends HTMLElement {
     constructor() {
       super()
-      this.attachShadow({ mode: 'open' })
+      if (useShadow) this.attachShadow({ mode: 'open' })
 
       const templateFn = fn.call(this, {
         html,
@@ -28,19 +31,22 @@ export default function define(fn) {
 
       this.template = new Signal.Computed(() => templateFn())
 
-      render(this.template.get(), this.shadowRoot)
+      const renderTemplate = () =>
+        render(this.template.get(), useShadow ? this.shadowRoot : this)
 
       let renderPending = false
       const watcher = new Signal.subtle.Watcher(() => {
         if (renderPending) return
         queueMicrotask(() => {
           renderPending = false
-          render(this.template.get(), this.shadowRoot)
+          renderTemplate()
           watcher.watch()
         })
       })
 
       watcher.watch(this.template)
+
+      renderTemplate()
     }
   })
 }
@@ -49,9 +55,9 @@ export default function define(fn) {
 
 Use it like this:
 
-import define from '@hot-page/functional-element'
+import { shadowElement } from '@hot-page/functional-element'
 
-define(function MyButton({ html, state }) {
+shadowElement(function HueSlider({ html, state }) {
   const value = state(0)
   const callCount = state(0)
 
@@ -61,20 +67,35 @@ define(function MyButton({ html, state }) {
     callCount.set(callCount.get() + 1)
   }
 
-  return () => html`
-    <style>
-      :host {
-        display: block;
-        background: hsl(${value.get()}, 100%, 90%);
-        padding: 16px;
-      }
-    </style>
-    <input type=range min=0 max=255 .value=${value.get()} @input=${onInput}>
-    <p>Value: ${value.get()}</p>
-    <p>update count: ${callCount.get()}</p>
-    <button @click=${() => value.set(1)}> set to 1</button >
-    <button @click=${() => value.set(100)}> set to 100</button >
-  `
+  return () => {
+    this.hue = value.get()
+    return html`
+      <style>
+        :host {
+          display: block;
+          padding: 16px;
+          background: hsl(${value.get()}, 100%, 90%);
+        }
+      </style>
+      <input type=range min=0 max=255 .value=${value.get()} @input=${onInput}>
+      <p>Hue: ${value.get()}</p>
+      <p>Update count: ${callCount.get()}</p>
+    `
+  }
 })
+
+To Do:
+- cleanup function
+- observed attributes and attribute reflection (first argument is an array of attribute names)
+- methods
+- context
+- context provider?
+
+What you give up:
+- private methods
+
+What you get:
+- easy reactivity
+- less boilerplate
 
 */

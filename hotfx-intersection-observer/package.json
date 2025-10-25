@@ -1,0 +1,27 @@
+{
+  "name": "@hot-page/hotfx-intersection-observer",
+  "version": "0.0.0",
+  "description": "",
+  "main": "hotfx-intersection-observer.js",
+  "scripts": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hot-page/fx.git"
+  },
+  "keywords": [
+    "custom",
+    "element",
+    "web",
+    "component",
+    "html",
+    "intersectionobserver",
+    "scroll",
+    "animation"
+  ],
+  "author": "Hot Page",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hot-page/fx/issues"
+  },
+  "homepage": "https://fx.hot.page/intersection-observer"
+}
