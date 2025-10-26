@@ -1,6 +1,6 @@
 {
   "name": "@hot-page/hotfx-intersection-observer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "hotfx-intersection-observer.js",
   "scripts": [],

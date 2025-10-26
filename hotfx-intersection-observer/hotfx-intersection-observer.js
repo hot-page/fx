@@ -37,6 +37,9 @@ class HotFXIntersectionObserver extends HTMLElement {
   // The connectedCallback method is called when the element is added to the
   // DOM.
   connectedCallback() {
+    // First, create the IntersectionObserver by calling the internal private
+    // method.
+    this.#createObserver()
     // Check if the threshold attribute is set and valid.
     if (this.hasAttribute('threshold')) {
       if (!thresholdRegex.test(this.getAttribute('threshold'))) {
