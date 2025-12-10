@@ -7,7 +7,7 @@ local.init({
     key: './localhost-key.pem',
     cert: './localhost.pem',
   },
-  port: 8000,
+  port: 9090,
   ui: false,
   cors: true,
   open: false,

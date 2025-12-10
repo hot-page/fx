@@ -52,10 +52,17 @@ class HotDemo extends HTMLElement {
     if (this.hasAttribute('use-iframe')) {
       const iframe = document.createElement('iframe')
       // Firefox does not like style sheet @imports without the origin
-      iframe.srcdoc = doc.documentElement.outerHTML.replaceAll(
+      const html = doc.documentElement.outerHTML.replaceAll(
         "@import url('/",
         "@import url('https://fx.hot.page/",
+      ).replaceAll(
+        "/images/",
+        "https://fx.hot.page/images/",
       )
+      // srcdoc was creating a lot of problemms in chrome where the custom
+      // elements just won't be instantiated
+      const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }))
+      iframe.setAttribute('src', url)
       iframe.setAttribute('part', 'iframe')
       body.appendChild(iframe)
     } else {
