@@ -191,7 +191,7 @@ export class HotFXSplitFlap extends HTMLElement {
   // Here we're just pulling from the attribute which has the current value or
   // using the default Latin alphabet.
   get characters() {
-    return this.getAttribute('characters') || ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!.,:?"\'/$'
+    return this.getAttribute('characters') || ' 0123456789!.,:?"\'/$'
   }
 
   // Setter for `.characters` property that reflects to the attribute.
