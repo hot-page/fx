@@ -2,7 +2,7 @@
   "name": "@kevinxmccormick/hotfx-split-flap-nums",
   "version": "0.0.2",
   "description": "A custom HTML element that animates a string like split-flap board from a train station.",
-  "main": "hotfx-split-flap.js",
+  "main": "hotfx-split-flap-nums.js",
   "type": "module",
   "keywords": [
     "web-components",
