@@ -1,0 +1,25 @@
+{
+  "name": "@hot-page/hotfx-pseudorandom",
+  "version": "0.0.0",
+  "description": "Use animated pseudorandom values in your CSS styles.",
+  "main": "hotfx-pseudorandom.js",
+  "scripts": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hot-page/fx.git"
+  },
+  "keywords": [
+    "custom element",
+    "web component",
+    "html",
+    "css",
+    "pseudorandom",
+    "design",
+  ],
+  "author": "Hot Page",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hot-page/fx/issues"
+  },
+  "homepage": "https://fx.hot.page/pseudorandom"
+}
