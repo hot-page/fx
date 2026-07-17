@@ -1,0 +1,9 @@
+{
+  "semi": false,
+  "trailingComma": "all",
+  "singleQuote": true,
+  "bracketSameLine": true,
+  "printWidth": 80,
+  "sortPackageJson": false,
+  "ignorePatterns": []
+}

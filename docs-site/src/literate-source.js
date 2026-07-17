@@ -8,7 +8,7 @@ class LiterateSource extends HTMLElement {
     super()
     this.innerHTML = `
       <style>
-        hotfx-js-docs div {
+        literate-source div {
           border: 3px solid #eee;
           border-top-color: var(--primary-color);
           border-radius: 50%;
@@ -97,7 +97,7 @@ class LiterateSource extends HTMLElement {
           .replace(/(\s|$)GET([\s.])/g, '$1<small>GET</small>$2')
           .replace(/(\s|$)POST([\s.])/g, '$1<small>POST</small>$2')
         return `
-          <div class="hotfx-js-docs-row" id="section-${i/2}">
+          <div class="literate-row" id="section-${i/2}">
             <div class="comment-section">
               <a class="section-link" href="#section-${i/2}">${linkIcon}</a>
               ${marked.parse(comment)}
@@ -127,7 +127,7 @@ class LiterateSource extends HTMLElement {
     this.innerHTML = html
 
     // Now highlight the code in comments using Prism
-    Array.from(this.querySelectorAll('.hotfx-js-docs-row .comment-section code[class*="language-"]'))
+    Array.from(this.querySelectorAll('.literate-row .comment-section code[class*="language-"]'))
       .forEach(el => Prism.highlightElement(el))
   }
 }

@@ -2,7 +2,6 @@ import Prism from 'prismjs'
 import burnout from './burnout.js'
 
 class HotDemo extends HTMLElement {
-
   constructor() {
     super()
     this.attachShadow({ mode: 'open' })
@@ -15,35 +14,50 @@ class HotDemo extends HTMLElement {
   }
 
   async #fetch() {
-    const cssResponse = await fetch(this.getAttribute('src') + '.css')
+    const cssResponse = await fetch(this.getAttribute('src') + '/styles.css')
     const css = await cssResponse.text()
-    const htmlResponse = await fetch(this.getAttribute('src') + '?theRealThingAndNotSomeClientRenderedBS')
+    const htmlResponse = await fetch(
+      this.getAttribute('src') + '?theRealThingAndNotSomeClientRenderedBS',
+    )
     const html = await htmlResponse.text()
     const parser = new DOMParser()
-    const doc = parser.parseFromString(html, "text/html")
-    doc.querySelectorAll('script:not([src*="jsdelivr"]):not([src*="localhost"])').forEach(s => s.remove())
-    const imports = doc.querySelector('head style').innerHTML
-      .split('\n')
-      .map(line => line.trim())
-      .filter(line => line && !line.startsWith(`@import url('${this.getAttribute('src')}`))
-      .map(line => `  ${line.replace(/\?cache-key=[^']*'/, "'").trim()}`)
+    const doc = parser.parseFromString(html, 'text/html')
+    doc
+      .querySelectorAll('script:not([src*="jsdelivr"]):not([src*="localhost"])')
+      .forEach((s) => s.remove())
+    const imports = doc
+      .querySelector('head style')
+      .innerHTML.split('\n')
+      .map((line) => line.trim())
+      .filter(
+        (line) =>
+          line && !line.startsWith(`@import url('${this.getAttribute('src')}`),
+      )
+      .map((line) => `  ${line.replace(/\?cache-key=[^']*'/, "'").trim()}`)
       .join('\n')
     if (!this.querySelector('[slot="source"]')) {
-      const scripts = Array.from(doc.querySelectorAll('script'))
-        .map(el => el.outerHTML)
-      this.shadowRoot.querySelector('#source code').textContent += scripts.join('\n\n')
-      this.shadowRoot.querySelector('#source code').textContent += scripts.length ? '\n' : ''
+      const scripts = Array.from(doc.querySelectorAll('script')).map(
+        (el) => el.outerHTML,
+      )
+      this.shadowRoot.querySelector('#source code').textContent +=
+        scripts.join('\n\n')
+      this.shadowRoot.querySelector('#source code').textContent +=
+        scripts.length ? '\n' : ''
       let style = '<style>\n'
       style += imports
       style += imports.length && css.length ? '\n\n' : ''
-      style += css.split('\n').map(line => `  ${line}`).join('\n')
+      style += css
+        .split('\n')
+        .map((line) => `  ${line}`)
+        .join('\n')
       style += '\n</style>\n'
       this.shadowRoot.querySelector('#source code').textContent += style
       const start = html.indexOf('<body>') + 6
       const end = html.indexOf('</body>')
-      const body = html.slice(start, end)
+      const body = html
+        .slice(start, end)
         .split('\n')
-        .map(line => line.startsWith('    ') ? line.slice(4) : line)
+        .map((line) => (line.startsWith('    ') ? line.slice(4) : line))
         .join('\n')
       this.shadowRoot.querySelector('#source code').textContent += body
     }
@@ -52,13 +66,9 @@ class HotDemo extends HTMLElement {
     if (this.hasAttribute('use-iframe')) {
       const iframe = document.createElement('iframe')
       // Firefox does not like style sheet @imports without the origin
-      const html = doc.documentElement.outerHTML.replaceAll(
-        "@import url('/",
-        "@import url('https://fx.hot.page/",
-      ).replaceAll(
-        "/images/",
-        "https://fx.hot.page/images/",
-      )
+      const html = doc.documentElement.outerHTML
+        .replaceAll("@import url('/", "@import url('https://fx.hot.page/")
+        .replaceAll('/images/', 'https://fx.hot.page/images/')
       // srcdoc was creating a lot of problemms in chrome where the custom
       // elements just won't be instantiated
       const url = URL.createObjectURL(new Blob([html], { type: 'text/html' }))
@@ -96,7 +106,6 @@ class HotDemo extends HTMLElement {
       this.shadowRoot.querySelector('#copy span').textContent = 'Copy'
     }, 2000)
   }
-
 
   #render() {
     this.shadowRoot.innerHTML = `
@@ -319,12 +328,10 @@ class HotDemo extends HTMLElement {
         </div>
       </div>
     `
-    this
-      .shadowRoot
+    this.shadowRoot
       .querySelector('button.html')
       .addEventListener('click', () => this.toggleHTML())
-    this
-      .shadowRoot
+    this.shadowRoot
       .querySelector('#copy')
       .addEventListener('click', this.#handleCopyClick)
   }
